@@ -11,3 +11,15 @@ class MyClient(discord.Client):
         super().__init__(*args,**kwargs)
 
 
+
+class BotGUI:
+    def __init__(self):
+        self.bot = MyClient([self._onready_callback_dontuse])
+
+
+
+    def run(self,token):
+
+
+
+
