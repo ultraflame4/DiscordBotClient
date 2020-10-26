@@ -16,7 +16,7 @@ class guild:
 async def build(obj:discord.Guild):
     name = obj.name
     icon = None
-    print(guild.__dict__)
+
     return guild(name,icon)
 
 
