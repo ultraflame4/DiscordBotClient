@@ -142,13 +142,49 @@ class ChannelContents(tk.Frame):
         self.content_canvas.configure(yscrollcommand=self.scrollbar.set)
 
 
+
+
+
     def switch(self):
         self.master.switch_channel_to(self)
 
     def c_pack(self):
-        self.pack(side=tk.LEFT,anchor="nw",expand=1,fill=tk.BOTH)
+        self.pack(side=tk.TOP,anchor="nw",expand=1,fill=tk.BOTH)
 
 
+class ChannelEntry_frame(tk.Frame):
+    def __init__(self,root):
+        super().__init__(master=root)
+        self.config(highlightbackground="black", highlightthickness=1)
+        self.channel = None
+
+        self.enter_button2 = tk.Button(master=self, text="Enter", command=self.process_n_send_message, width=10)
+        self.enter_button2.pack(side=tk.LEFT,anchor="sw")
+
+        self.text_entry = tk.Entry(master=self,width=120)
+
+
+        self.text_entry.pack(side=tk.LEFT,anchor="sw",fill=tk.X)
+
+        self.enter_button = tk.Button(master=self,text="Enter",command=self.process_n_send_message,width=10)
+        self.enter_button.pack(side=tk.LEFT, anchor="sw")
+
+        self.pack(side=tk.BOTTOM,anchor="sw",fill=tk.X)
+
+
+
+
+    def process_n_send_message(self):
+        msg = self.text_entry.get()
+        # Clear entry
+        self.text_entry.delete(0,"end")
+
+        if self.channel != None:
+            self.channel.send(msg)
+
+
+    def update(self):
+        self.channel = self.master.current.channelObj
 
 class ChannelContents_Container_frame(tk.Frame):
 
@@ -158,6 +194,7 @@ class ChannelContents_Container_frame(tk.Frame):
         self.config(width=300,height=300,bg="pink")
         self.channel_contents=[self.create_content_frames(i) for i in root.channel_frame.text_channels_buttons]
 
+        self.user_text_entry = ChannelEntry_frame(root=self)
 
         self.current=None
         self.pack(side=tk.LEFT,anchor="nw",expand=1,fill=tk.BOTH)
@@ -176,7 +213,9 @@ class ChannelContents_Container_frame(tk.Frame):
         if self.current != None:
             self.current.pack_forget()
 
+
         self.current=channel_frame
+        self.user_text_entry.update()
         self.current.c_pack()
 
         pass
@@ -195,8 +234,6 @@ class GuildChannelsListFrame(tk.Frame):
 
     def construct_buttons(self,i):
         return channelBottom(i,master=self)
-
-
 
 
 
@@ -235,6 +272,7 @@ class GuildContentMasterFrame(tk.Frame):
 
         self.client = client
         self.current = None
+
 
         self.guild_contents = [self.create_content_frame(i) for i in root.guild_list_content_frame.guild_buttons]
 

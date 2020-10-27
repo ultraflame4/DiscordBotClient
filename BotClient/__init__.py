@@ -1,6 +1,7 @@
 import asyncio
 import sys
 import threading
+import traceback
 
 import discord
 from threading import Thread
@@ -21,7 +22,7 @@ class MyClient(discord.Client):
         self.fake = ConClient()
         self.do_stop=False
         self.loop.create_task(self.checkStop())
-
+        self.coro_to_run=[]
 
     async def on_message(self,msg:discord.Message):
         if msg.guild != None:
@@ -37,6 +38,14 @@ class MyClient(discord.Client):
     async def checkStop(self):
         await self.wait_until_ready()
         while not self.is_closed():
+            for i in self.coro_to_run:
+                try:
+                    await i()
+                except Exception:
+                    traceback.print_exc()
+
+            self.coro_to_run.clear()
+
 
             if self.do_stop:
                 self.guiThread.join()
@@ -74,7 +83,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print("Bot is ready")
 
-        self.fake.guilds = {i.id : await tools.build(i) for i in self.guilds}
+        self.fake.guilds = {i.id : await tools.build(i,self) for i in self.guilds}
         self.create_gui()
 
         pass
