@@ -64,13 +64,27 @@ class channel_header(tk.Frame):
         self.pack(side=tk.TOP,anchor="nw",fill=tk.X)
 
 
-class message_label(tk.Label):
+class message_label_head(tk.Frame):
+    def __init__(self,root,msg:discord.Message):
+        super().__init__(master=root)
+        author_button = tk.Button(master=self, text=msg.author.name)
+
+        author_button.pack(side=tk.LEFT, anchor="nw")
+
+        self.pack(side=tk.TOP,anchor="nw")
+
+
+class message_label(tk.Frame):
     def __init__(self,master,msg:discord.Message):
-        super().__init__(master)
+        super().__init__(master, highlightbackground="black", highlightthickness=1)
 
-        txt = f"[{msg.author.name}] {msg.content}"
+        self.header = message_label_head(self,msg)
 
-        self.config(text=txt,height=1,width=100,anchor="w")
+        self.msg_label = tk.Label(master=self,text=msg.content,anchor="w")
+
+
+        self.msg_label.pack(side=tk.TOP,anchor="nw")
+
         self.pack(side=tk.TOP,anchor="nw",fill=tk.X)
 
 
@@ -80,12 +94,13 @@ class channel_text_container(tk.Frame):
     def __init__(self,root):
         super().__init__(master=root)
         self.config(bg="grey")
-        self.master.channelObj.on_msg_callback = self.add_line
 
+        self.master.channelObj.on_msg_callback = self.add_line
         self.pack(side=tk.LEFT,anchor="nw",expand=1,fill=tk.BOTH)
 
 
         self.messages=[]
+        [self.add_line(i) for i in self.master.channelObj.h]
 
 
     def add_line(self, msg:discord.Message):

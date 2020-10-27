@@ -18,10 +18,13 @@ class channel:
         self.name=channel_obj.name
         self.id=channel_obj.id
         self.on_msg_callback=None
+        self.h = []
 
 
-    def update_channel_with_history(self):
-        pass
+    async def update_channel_with_history(self):
+        async for message in self.obj.history(limit=20):
+            self.h.insert(0,message)
+
 
 
 
@@ -43,14 +46,16 @@ class guild:
         self.id = self._guild_obj.id
         self.channels={i.id : channel(i) for i in self._guild_obj.text_channels}
 
-
+    async def firstUpdate(self):
+        [await i.update_channel_with_history() for i in list(self.channels.values())]
 
 
 async def build(obj:discord.Guild):
     name = obj.name
     icon = None
-
-    return guild(obj,name,icon)
+    g = guild(obj,name,icon)
+    await g.firstUpdate()
+    return g
 
 
 def debugObj(obj):
