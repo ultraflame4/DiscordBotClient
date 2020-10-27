@@ -11,6 +11,9 @@ This python package gives you a GUI for your bot!
 ## Notes:
 - There isnt a setup.py yet, so simply drag the folder to your project root, then import it in the script
 
+- There isnt support for images or embed messages yet.
+
+- Yes i know my code is terrible and my class and variable names are weird.
 
 
 
