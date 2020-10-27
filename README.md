@@ -2,7 +2,7 @@
 This python package gives you a GUI for your bot!
 - Can send messages
 - Can live message updates (duh)
-- Can read message history (set at 10)
+- Can read message history (set at 20)
 
 
 
