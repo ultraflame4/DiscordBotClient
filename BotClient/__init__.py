@@ -13,6 +13,7 @@ class ConClient:
         self.guilds = None
 
 
+
 class MyClient(discord.Client):
 
     def __init__(self,*args,**kwargs):
@@ -20,6 +21,17 @@ class MyClient(discord.Client):
         self.fake = ConClient()
         self.do_stop=False
         self.loop.create_task(self.checkStop())
+
+
+    async def on_message(self,msg:discord.Message):
+        if msg.guild != None:
+            g_id= msg.guild.id
+            c_id = msg.channel.id
+            g = self.fake.guilds[g_id]
+            c = g.channels[c_id]
+            c.on_message(msg)
+
+
 
 
     async def checkStop(self):
@@ -62,7 +74,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         print("Bot is ready")
 
-        self.fake.guilds = [await tools.build(i) for i in self.guilds]
+        self.fake.guilds = {i.id : await tools.build(i) for i in self.guilds}
         self.create_gui()
 
         pass
