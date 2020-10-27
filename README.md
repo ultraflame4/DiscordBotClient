@@ -15,6 +15,8 @@ This python package gives you a GUI for your bot!
 
 - Yes i know my code is terrible and my class and variable names are weird.
 
+- Yes i also know that the colours in the gui r weird. they will be removed next time (darkmode support may also be added).
+
 
 
 
