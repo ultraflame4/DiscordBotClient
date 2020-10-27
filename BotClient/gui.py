@@ -95,12 +95,12 @@ class channel_text_container(tk.Frame):
         super().__init__(master=root)
         self.config(bg="grey")
 
-        self.master.channelObj.on_msg_callback = self.add_line
+        self.master.master.channelObj.on_msg_callback = self.add_line
         self.pack(side=tk.LEFT,anchor="nw",expand=1,fill=tk.BOTH)
 
 
         self.messages=[]
-        [self.add_line(i) for i in self.master.channelObj.h]
+        [self.add_line(i) for i in self.master.master.channelObj.h]
 
 
     def add_line(self, msg:discord.Message):
@@ -113,10 +113,34 @@ class channel_text_container(tk.Frame):
 class ChannelContents(tk.Frame):
     def __init__(self,master,channel:BotClient.tools.channel):
         super().__init__(master)
+
         self.config(bg='yellow')
+
         self.channelObj = channel
+
         self.header = channel_header(self)
-        self.actual_content=channel_text_container(self)
+
+
+        self.content_canvas = tk.Canvas(self)
+        self.content_canvas.pack(side=tk.LEFT,anchor="nw",expand=1,fill=tk.BOTH)
+
+        self.scrollbar = tk.Scrollbar(self,orient="vertical",command=self.content_canvas.yview)
+        self.scrollbar.pack(side=tk.RIGHT,anchor="ne",fill=tk.Y)
+
+
+
+
+        self.actual_content=channel_text_container(self.content_canvas)
+
+        self.actual_content.bind("<Configure>",
+                                 lambda e: self.content_canvas.configure(
+                                     scrollregion=self.content_canvas.bbox("all")
+                                     ))
+
+        self.content_canvas.create_window((0,0),window=self.actual_content,anchor="nw")
+
+        self.content_canvas.configure(yscrollcommand=self.scrollbar.set)
+
 
     def switch(self):
         self.master.switch_channel_to(self)
