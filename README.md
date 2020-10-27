@@ -23,3 +23,6 @@ bot.run("<YOUR TOKEN>")
 
 ```
 
+
+## Dependancies
+- discord.py
