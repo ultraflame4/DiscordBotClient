@@ -14,7 +14,7 @@
 <body style="height: 100%">
 <div class="column" style="height: 100%">
     <div id="botinfo" class="row">
-        <h2 style="flex-grow: 0">DiscordBotClient</h2>
+        <h2 style="flex-grow: 0;font-size: .9em">DiscordBotClient</h2>
         <div class="row" style="align-items: flex-end;margin-left: 1em;flex-grow: 1">
             <h5>Bot Name: </h5>
             <label id="botnamehere" class="botinfobarlabel">NameHEre</label>
@@ -30,16 +30,23 @@
     </div>
     <div id="content" class="row" style="height: 100%">
         <div id="guildlist" class="column">
-            <div class="guildListItemContainer row tooltip" data-tooltip="Home" data-guildId="home">
-                <img src="https://cdn.iconscout.com/icon/free/png-512/home-795-444791.png" class="guildListItemIcon">
+            <div id="guild-home" class="guildListItemContainer row tooltip" data-tooltip="Home" data-guildid="home">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Home_%2885249%29_-_The_Noun_Project.svg" class="guildListItemIcon">
             </div>
         </div>
         <div id="guildlist_contents_area_frame" class="row" style="flex-grow: 1"> <!-- Content area -->
             <div id="sidebar" class="column">
-                <div id="sidebar-contents" class="column" style="flex-grow: 1">
-                
+                <div id="sidebar-contents" class="column">
+                    <div id="sidebar-header">guild name</div>
+                    <div id="sidebar-channel-container" class="column"></div>
                 </div>
-                <div id="profile_area" class="row">test</div>
+                <div id="profile_area" class="row">
+                    <img id="profile-area-img" src="none">
+                    <div id="profile-area-user" class="column">
+                        <label id="profile-area-user-name">username</label>
+                        <label id="profile-area-user-id">userid</label>
+                    </div>
+                </div>
             </div>
             
             <div id="chat_content_area" class="column" style="flex-grow: 1">
@@ -50,7 +57,25 @@
                         messages container
                         </div>
                         <div id="input-area" class="row">
-                        input area
+                            <input class="chat-tools" id="upload-button" type="image" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Wlm-icon-upload-white.svg">
+                            <input id="chat-textinput" type="text" src="none" placeholder="Message">
+                            
+                            
+                            <div class="chat-tools" id="chat-emojitool">
+                                <script>
+                                    function toggleEmojiMenu(){
+                                        if (document.getElementById("emojitool-menupopup").style.visibility==="hidden"){
+                                            document.getElementById("emojitool-menupopup").style.visibility="visible"
+                                            return
+                                        }
+                                        document.getElementById("emojitool-menupopup").style.visibility="hidden"
+                                    }
+                                </script>
+                                <input class="chat-tools" type="image" src="https://upload.wikimedia.org/wikipedia/commons/7/72/Twemoji2_1f642.svg" onclick="toggleEmojiMenu()">
+                                <div id="emojitool-menupopup">WIP</div>
+                            </div>
+                            
+                            
                         </div>
                         
                     </div>
