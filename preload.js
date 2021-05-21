@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         channelContainer.innerHTML=""
         // populate channels
-        console.log("populate")
+        // console.log("populate")
         ipcRenderer.send("populateGuildChannel",guildId)
 
     })

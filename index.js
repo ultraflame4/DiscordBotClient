@@ -44,7 +44,7 @@ function createWindow(){
     })
 
     ipcMain.on("populateGuildChannel",(e,guildId)=> {
-        console.log("populating...")
+        // console.log("populating...")
         // Loop through guild channels and add them tto sidebar
         client.guilds.fetch(guildId).then((guild)=> {
             for (const c of guild.channels.cache) {
