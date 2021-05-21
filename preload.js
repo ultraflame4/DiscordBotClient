@@ -18,12 +18,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     })
 
+    ipcRenderer.on("openGuildContent",(e,guildId)=>{
+        //todo
+    })
+
+
     ipcRenderer.on("addGuild",(e,name,guildId,imageUrl)=>{
         let guildlist = document.getElementById("guildlist")
         let guildItemContainer = document.createElement("div")
         guildItemContainer.className = "guildListItemContainer row tooltip"
         guildItemContainer.dataset.tooltip = name
         guildItemContainer.dataset.guildId = guildId
+
+        guildItemContainer.addEventListener("click", () => {
+            ipcRenderer.send("requestOpenGuildContent", guildId)
+            // Send signal to main process, main process thens sends back another signal with required data
+        });
+
+
+
 
         let guildnameIcon = document.createElement("img")
         guildnameIcon.className = "guildListItemIcon"
@@ -42,5 +55,4 @@ document.addEventListener("keydown", function (e) {
         ipcRenderer.send("devtools")
     }
 });
-
 

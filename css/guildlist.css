@@ -1,0 +1,28 @@
+
+#guildlist{
+    align-self: center;
+    align-items: center;
+    justify-items: center;
+    background-color: #4f4f4f;
+    box-sizing: border-box;
+    height: 100%;
+    width: 4em;
+}
+
+
+.guildListItemContainer{
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    height: 3em;
+    width: 3em;
+}
+
+
+
+.guildListItemIcon{
+    height: 3em;
+    width: 3em;
+}
+
+

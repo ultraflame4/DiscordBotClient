@@ -1,0 +1,22 @@
+
+#chat-header{
+    height: 3em;
+    background-color: #4a4a4a;
+}
+
+#chat_content{
+    flex-grow: 1;
+}
+
+#chat-area{
+    flex-grow: 1;
+}
+
+#messages-container{
+    flex-grow: 1;
+}
+
+#input-area{
+    height: 4em;
+    background-color: #4f4f4f;
+}

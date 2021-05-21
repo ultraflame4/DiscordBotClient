@@ -26,6 +26,11 @@ function createWindow(){
 
     ipcMain.on("LoginRequest",login_request_callback)
 
+    ipcMain.on("requestOpenGuildContent",(e,guild_id)=>{
+
+        win.webContents.send("openGuildContent",guild_id); // Send back a signal with required data
+    })
+
 }
 
 
@@ -55,6 +60,8 @@ app.on("before-quit", () => {
 
 function login_request_callback() {
     win.webContents.send("loggedin",true); //prevent user from clicking button again
+
+
 
     prompt({
         title: "Discord Bot Login",
@@ -96,3 +103,4 @@ client.on('ready', ()=>{
     }
 
 })
+

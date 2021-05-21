@@ -8,7 +8,7 @@
 
 
 body{
-    background-color: #9a9a9a;
+    background-color: #6e6e6e;
 }
 
 button{
@@ -46,34 +46,13 @@ button:disabled{
 }
 
 
-#guildlist{
-    align-self: center;
-    align-items: center;
-    justify-items: center;
-    background-color: #4f4f4f;
-    box-sizing: border-box;
-    height: 100%;
-    width: 6em;
-}
-
 #botTokenLogin{
     height: 90%;
     width: 5em;
 }
 
-.guildListItemContainer{
-    justify-content: center;
-    align-items: center;
-    height: 5em;
-    width: 5em;
-}
 
 
-
-.guildListItemIcon{
-    height: 4em;
-    width: 4em;
-}
 
 
 .tooltip {
@@ -84,7 +63,7 @@ button:disabled{
 .tooltip:after {
     font-size: .8em;
     position: fixed;
-    background: rgba(30,30,30,.8);
+    background: rgba(30, 30, 30, .8);
     content: attr(data-tooltip);
     left: 5em;
     max-width: 200em;
@@ -92,8 +71,4 @@ button:disabled{
     transition: all ease .3s;
     padding: 5px;
     border-radius: 7px;
-}
-
-.tooltip:hover:after {
-    opacity: 1;
 }

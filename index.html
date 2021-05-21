@@ -5,6 +5,10 @@
     <title>Discord Bot Client</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/guildlist.css">
+    <link rel="stylesheet" href="css/memberlist.css">
     
 </head>
 <body style="height: 100%">
@@ -26,9 +30,36 @@
     </div>
     <div id="content" class="row" style="height: 100%">
         <div id="guildlist" class="column">
+            <div class="guildListItemContainer row tooltip" data-tooltip="Home" data-guildId="home">
+                <img src="https://cdn.iconscout.com/icon/free/png-512/home-795-444791.png" class="guildListItemIcon">
+            </div>
         </div>
-        <div id="guildlist_contents_area" class="row"> <!-- Content area -->
-            <div>test</div>
+        <div id="guildlist_contents_area_frame" class="row" style="flex-grow: 1"> <!-- Content area -->
+            <div id="sidebar" class="column">
+                <div id="sidebar-contents" class="column" style="flex-grow: 1">
+                
+                </div>
+                <div id="profile_area" class="row">test</div>
+            </div>
+            
+            <div id="chat_content_area" class="column" style="flex-grow: 1">
+                <div id="chat-header" class="row">header</div>
+                <div id="chat_content" style="flex-grow: 1" class="row">
+                    <div id="chat-area" class="column">
+                        <div id="messages-container" class="column">
+                        messages container
+                        </div>
+                        <div id="input-area" class="row">
+                        input area
+                        </div>
+                        
+                    </div>
+                    <div id="memberlist-panel" class="column">
+                        memberlist panel
+                    </div>
+                </div>
+            </div>
+
 
         </div>
     </div>
