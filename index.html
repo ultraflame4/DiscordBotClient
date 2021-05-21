@@ -1,13 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
 <head>
     <meta charset="UTF-8">
     <title>Discord Bot Client</title>
-    <link rel="stylesheet" href="./css/reset.css">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="css/main.css">
+    
 </head>
-<body>
-<div class="botinfo">
-    Name:
+<body style="height: 100%">
+<div class="column" style="height: 100%">
+    <div id="botinfo" class="row">
+        <h2 style="flex-grow: 0">DiscordBotClient</h2>
+        <div class="row" style="align-items: flex-end;margin-left: 1em;flex-grow: 1">
+            <h5>Bot Name: </h5>
+            <label id="botnamehere" class="botinfobarlabel">NameHEre</label>
+        </div>
+        <div class="row" style="align-items: flex-end;margin-left: 1em;flex-grow: 1">
+            <h5>Status: </h5>
+            <label id="botstatushere" class="botinfobarlabel">NameHEre</label>
+        </div>
+        <button id="botTokenLogin">
+            Login
+        </button>
+        
+    </div>
+    <div id="content" class="row" style="height: 100%">
+        <div id="guildlist" class="column">
+            <div>test1</div>
+            <div>test</div>
+        </div>
+        <div id="guildlist_contents_area" class="row">
+            <div>test</div>
+
+        </div>
+    </div>
 </div>
 
 </body>
