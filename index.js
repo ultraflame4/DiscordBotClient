@@ -54,18 +54,22 @@ app.on("before-quit", () => {
 
 
 function login_request_callback() {
+    win.webContents.send("loggedin",true); //prevent user from clicking button again
+
     prompt({
         title: "Discord Bot Login",
         label: "Token: ",
         type: "input",
+        alwaysOnTop: true,
+        skipTaskbar: false,
         inputAttrs: {
             type: "password",
             required: true
         }
     }).then(
-        (r)=>{
-            if(r !== null) {
-                win.webContents.send("loggedin");
+        (r) => {
+            if (r !== null) {
+                win.webContents.send("loggedin", true);
                 discordLogin(r)
             }
         }
@@ -74,11 +78,21 @@ function login_request_callback() {
 
 function discordLogin(token){
     if (token===null){return}
-    client.login(token)
+
+    client.login(token).catch((r) => {
+        console.log(r)
+        win.webContents.send("loggedin", false)
+    });
+
 }
 
 
 client.on('ready', ()=>{
-    win.webContents.send("botready")
-    win.webContents.send("botname",client.user.username)
+    win.webContents.send("botready",client.user.username)
+
+    console.log(client.guilds.cache)
+    for (const g of client.guilds.cache) {
+        win.webContents.send("addGuild",g[1].name,g[1].id,g[1].iconURL())
+    }
+
 })

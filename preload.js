@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron')
-
+const Discord = require("discord.js")
 
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -7,13 +7,31 @@ window.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.send("LoginRequest")
     })
 
-    ipcRenderer.on("loggedin", () => {
-        document.querySelector('#botTokenLogin').disabled=true;
+    ipcRenderer.on("loggedin", (e,b) => {
+        document.querySelector('#botTokenLogin').disabled=b;
     });
 
 
-    ipcRenderer.on("botready",()=>{document.getElementById("botstatushere").textContent="Ready"})
-    ipcRenderer.on("botname",(e,n)=>{document.getElementById("botnamehere").textContent=n})
+    ipcRenderer.on("botready",(e,name,guilds)=>{
+        document.getElementById("botstatushere").textContent = "Ready";
+        document.getElementById("botnamehere").textContent = name;
+
+    })
+
+    ipcRenderer.on("addGuild",(e,name,guildId,imageUrl)=>{
+        let guildlist = document.getElementById("guildlist")
+        let guildItemContainer = document.createElement("div")
+        guildItemContainer.className = "guildListItemContainer row tooltip"
+        guildItemContainer.dataset.tooltip = name
+        guildItemContainer.dataset.guildId = guildId
+
+        let guildnameIcon = document.createElement("img")
+        guildnameIcon.className = "guildListItemIcon"
+        guildnameIcon.src=imageUrl
+
+        guildItemContainer.append(guildnameIcon)
+        guildlist.append(guildItemContainer)
+    })
 
 
 })
@@ -24,4 +42,5 @@ document.addEventListener("keydown", function (e) {
         ipcRenderer.send("devtools")
     }
 });
+
 
