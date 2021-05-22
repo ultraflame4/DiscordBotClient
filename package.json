@@ -14,6 +14,7 @@
     "electron": "^12.0.9",
     "electron-prompt": "^1.6.2",
     "erlpack": "^0.1.3",
+    "moment": "^2.29.1",
     "utf-8-validate": "^5.0.5"
   },
   "devDependencies": {},

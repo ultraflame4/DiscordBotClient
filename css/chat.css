@@ -1,18 +1,36 @@
 
 #chat-header{
-    height: 3em;
+    padding-left: 1em;
+    min-height: 32px;
     background-color: #4a4a4a;
+    align-items: center;
+}
+
+
+#chat-title{
+    font-weight: bold;
+    font-size: .85em;
+}
+
+#chat_content_area{
+    min-height: 0;
+
+    flex-grow: 1;
 }
 
 #chat_content{
     flex-grow: 1;
+    min-height: 0;
 }
 
 #chat-area{
+    background-color: #5d5d5d;
     flex-grow: 1;
 }
 
 #messages-container{
+    min-height: 0;
+    overflow-y: auto;
     flex-grow: 1;
 }
 
@@ -21,8 +39,9 @@
     padding: 0 1em 0 1em;
     margin: 1em;
     margin-top: 0;
-    min-height: 3em;
+    height: 3em;
     background-color: #4f4f4f;
+    border-radius: .5em;
 
 }
 
@@ -62,26 +81,38 @@
 }
 
 #messages-container{
-    overflow: scroll;
+
 }
 
 .message-container-item{
     margin-left: 1em;
+    margin-top: 1em;
 }
 
 .message-item-profile{
-    height: 2.5em;
-    width: 2.5em;
+    border-radius: 3em;
+    height: 3em;
+    width: 3em;
 }
 
 .message-item-content{
-    margin-left: 1em;
+    margin-left: .5em;
+
 }
 
 .message-content-header{
-    font-size: .9em;
+    align-items: baseline;
+    font-size: 1em;
 }
 
 .message-text{
     font-size: .8em;
+}
+
+
+.msg-header-timestamp{
+    color: #7e7e7e;
+    margin-left: 8px;
+    font-size: .65em;
+    font-family: Verdana ,serif;
 }

@@ -9,6 +9,12 @@
     width: 4em;
 }
 
+#guildlist_contents_area_frame {
+    flex-grow: 1;
+    border-radius: 1em;
+    min-height: 0;
+}
+
 
 .guildListItemContainer{
     justify-content: center;
@@ -21,8 +27,16 @@
 
 
 .guildListItemIcon{
+    border-radius: 3em;
     height: 3em;
     width: 3em;
 }
 
+
+.guildListItemIcon:hover{
+    transition: ease;
+    border-radius: .5em;
+    height: 3em;
+    width: 3em;
+}
 
