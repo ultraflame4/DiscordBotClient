@@ -61,7 +61,7 @@ button:disabled {
     cursor: pointer;
 }
 
-.tooltip:after {
+.tooltip::after {
     font-size: .8em;
     position: fixed;
     background: rgba(30, 30, 30, .8);

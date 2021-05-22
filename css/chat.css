@@ -60,3 +60,28 @@
     width: 15em;
     bottom: 4em;
 }
+
+#messages-container{
+    overflow: scroll;
+}
+
+.message-container-item{
+    margin-left: 1em;
+}
+
+.message-item-profile{
+    height: 2.5em;
+    width: 2.5em;
+}
+
+.message-item-content{
+    margin-left: 1em;
+}
+
+.message-content-header{
+    font-size: .9em;
+}
+
+.message-text{
+    font-size: .8em;
+}
