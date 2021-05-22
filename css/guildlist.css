@@ -6,7 +6,7 @@
     background-color: #4f4f4f;
     box-sizing: border-box;
     height: 100%;
-    width: 4em;
+    min-width: 4em;
 }
 
 #guildlist_contents_area_frame {

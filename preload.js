@@ -40,9 +40,14 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.on("openGuildContent",(e,guildId,guildName)=>{
         // renable member list.
         document.getElementById("memberlist-panel").style.display="flex"
-        let sidebar_header = document.getElementById("sidebar-header")
+        let sidebar_header = document.getElementById("sidebar-header-guildname")
         sidebar_header.style.display="flex"
-        sidebar_header.textContent = guildName
+        if (guildName.length > 26){
+            sidebar_header.textContent = guildName.slice(0,26) + " ..."
+        }
+        else{
+            sidebar_header.textContent = guildName
+        }
         // clear guild channels
         let channelContainer = document.getElementById("sidebar-channel-container")
 

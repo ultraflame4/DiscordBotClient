@@ -14,7 +14,6 @@
 
 #chat_content_area{
     min-height: 0;
-
     flex-grow: 1;
 }
 
@@ -31,6 +30,7 @@
 #messages-container{
     min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     flex-grow: 1;
 }
 
@@ -107,6 +107,7 @@
 
 .message-text{
     font-size: .8em;
+
 }
 
 
