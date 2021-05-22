@@ -97,7 +97,8 @@ function createWindow() {
             channel.messages.fetch({limit: 50}).then((messages) => {
                 messages.forEach((msg, msgId) => {
                     // note: oldest text comes first.
-                    let moment_date = moment(msg.date)
+                    let moment_date = moment(msg.createdAt)
+                    console.log(msg.createdAt)
                     // Format date to string
                     e.sender.send("addChatMessage", msg.content,
                                   {id: msg.author.id, name: msg.author.username, avatarURL: msg.author.avatarURL()},
@@ -139,7 +140,6 @@ app.on("before-quit", () => {
 
 function login_request_callback() {
     win.webContents.send("loggedin", true); //prevent user from clicking button again
-
 
     prompt({
         title: "Discord Bot Login",

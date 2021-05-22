@@ -118,9 +118,13 @@ window.addEventListener('DOMContentLoaded', () => {
         let message_text_container;
 
         // Check if msg container has any children   | Get prev message item author Id
+        if (message_container.childElementCount>0){
+            console.log(createdTimeData.timestamp-message_container.firstChild.dataset.timestamp)
+            console.log(createdTimeData.timestamp,message_container.firstChild.dataset.timestamp)
+        }
         if (message_container.childElementCount > 0 &&
             message_container.firstChild.dataset.authorId===authorData.id &&
-            (createdTimeData.timestamp-message_container.firstChild.dataset.timestamp) <=300){
+            (message_container.firstChild.dataset.timestamp-createdTimeData.timestamp) <=300){
             // if same author, set the new message-text to same msg-text-container
 
             message_item = message_container.firstChild
