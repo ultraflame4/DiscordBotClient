@@ -83,11 +83,9 @@
     bottom: 4em;
 }
 
-.message-container-item{
+.message-container-item {
     margin: 1em;
-    overflow-x: hidden;
 }
-
 .message-item-profile{
     border-radius: 3em;
     height: 3em;
