@@ -7,16 +7,14 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 
     ipcRenderer.on("loggedin", (e,b:boolean) => {
-        // @ts-ignore
-        document.querySelector('#botTokenLogin').disabled=b;
+        (<HTMLButtonElement>document.getElementById('botTokenLogin')).disabled=b;
     });
 
 
     ipcRenderer.on("botready",(e,name,avatarUrl,tag)=>{
         document.getElementById("botstatushere").textContent = "Ready";
         document.getElementById("botnamehere").textContent = name;
-        // @ts-ignore
-        document.getElementById("profile-area-img").src=avatarUrl
+        (<HTMLImageElement>document.getElementById("profile-area-img")).src=avatarUrl
         document.getElementById("profile-area-user-name").textContent = name;
         document.getElementById("profile-area-user-id").textContent = tag;
     })

@@ -41,9 +41,7 @@ function createWindow() {
         }
 
         client.guilds.fetch(guild_id).then((guild) => {
-            e.sender.send("openGuildContent", guild.id, guild.name);
-            // Send back a signal with required data
-
+            e.sender.send("openGuildContent", guild.id, guild.name); // Send back a signal with required data
 
         })
 
@@ -57,15 +55,12 @@ function createWindow() {
 
     })
 
-
     // Populate content listeners
-
-
     ipcMain.on("populateGuildChannel", (e, guildId) => {
 
         // Loop through guild channels and add them tto sidebar
         client.guilds.fetch(guildId).then((guild) => {
-            guild.channels.cache.forEach((channel)=>{
+            guild.channels.cache.forEach((channel:GuildChannel)=>{
                 // Skip category and voice channels for now. todo add support for categories and voice
                 if (channel.type === "category" || channel.type === "voice") {
                     return
