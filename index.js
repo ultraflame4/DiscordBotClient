@@ -67,7 +67,7 @@ function createWindow() {
 
 
     ipcMain.on("populateGuildChannel", (e, guildId) => {
-        // console.log("populating...")
+
         // Loop through guild channels and add them tto sidebar
         client.guilds.fetch(guildId).then((guild) => {
             for (const c of guild.channels.cache) {
@@ -98,7 +98,7 @@ function createWindow() {
                 messages.forEach((msg, msgId) => {
                     // note: oldest text comes first.
                     let moment_date = moment(msg.createdAt)
-                    console.log(msg.createdAt)
+
                     // Format date to string
                     e.sender.send("addChatMessage", msg.content,
                                   {id: msg.author.id, name: msg.author.username, avatarURL: msg.author.avatarURL()},
