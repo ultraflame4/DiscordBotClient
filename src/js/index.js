@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
+var prompt = require("electron-prompt");
 var path = require("path");
 var moment = require("moment");
 var Discord = require("discord.js");
@@ -102,29 +103,25 @@ electron_1.app.on("before-quit", function () {
 function login_request_callback() {
     win.webContents.send("loggedin", true); //prevent user from clicking button again
     console.log("test");
-    client.login("NzAxMDE2MTY0MjcyMzA4MzA0.XprWLQ.AUDL5VNhkjFwb8cal2d99tXi4x8");
-    // TODO UNDO
-    // prompt({
-    //     title: "Discord Bot Login",
-    //     label: "Token: ",
-    //     type: "input",
-    //     alwaysOnTop: true,
-    //     skipTaskbar: false,
-    //     inputAttrs: {
-    //         type: "password",
-    //         required: true
-    //     }
-    // }).then(
-    //     (r) => {
-    //         if (r !== null) {
-    //             win.webContents.send("loggedin", true);
-    //             discordLogin(r)
-    //         }
-    //         else{
-    //             win.webContents.send("loggedin", false)
-    //         }
-    //     }
-    // );
+    prompt({
+        title: "Discord Bot Login",
+        label: "Token: ",
+        type: "input",
+        alwaysOnTop: true,
+        skipTaskbar: false,
+        inputAttrs: {
+            type: "password",
+            required: true
+        }
+    }).then(function (r) {
+        if (r !== null) {
+            win.webContents.send("loggedin", true);
+            discordLogin(r);
+        }
+        else {
+            win.webContents.send("loggedin", false);
+        }
+    });
 }
 function discordLogin(token) {
     if (token === null) {
