@@ -1,7 +1,7 @@
 {
   "name": "discordbotclient",
   "version": "0.0.2",
-  "main": "index.js",
+  "main": "src/js/index.js",
   "scripts": {
     "start": "electron ."
   },
@@ -15,6 +15,7 @@
     "electron-prompt": "^1.6.2",
     "erlpack": "^0.1.3",
     "moment": "^2.29.1",
+    "typescript": "^4.2.4",
     "utf-8-validate": "^5.0.5"
   },
   "devDependencies": {},

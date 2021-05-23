@@ -1,9 +1,12 @@
-const {app, BrowserWindow, ipcMain} = require("electron")
-const prompt = require('electron-prompt');
-const path = require('path')
-const moment = require("moment")
 
-const Discord = require('discord.js');
+import {app, BrowserWindow, ipcMain} from "electron"
+import * as prompt from 'electron-prompt'
+import path = require('path')
+import moment = require("moment")
+
+import Discord = require("discord.js");
+import {GuildChannel, TextChannel} from "discord.js";
+
 const client = new Discord.Client();
 var win = null;
 
@@ -20,7 +23,7 @@ function createWindow() {
     )
     win.setMenu(null)
 
-    win.loadFile("index.html")
+    win.loadFile(path.join(__dirname,"../gui/index.html"))
 
     ipcMain.on("devtools", () => {
         win.webContents.toggleDevTools()
@@ -48,7 +51,7 @@ function createWindow() {
 
 
     ipcMain.on("requestOpenChannelContent", (e, channelId) => {
-        client.channels.fetch(channelId).then((channel) => {
+        client.channels.fetch(channelId).then((channel:Discord.GuildChannel) => {
             e.sender.send("openChannelContent", channel.id, channel.name)
         })
 
@@ -62,25 +65,24 @@ function createWindow() {
 
         // Loop through guild channels and add them tto sidebar
         client.guilds.fetch(guildId).then((guild) => {
-            for (const c of guild.channels.cache) {
-
-                let channel = c[1]
+            guild.channels.cache.forEach((channel)=>{
                 // Skip category and voice channels for now. todo add support for categories and voice
                 if (channel.type === "category" || channel.type === "voice") {
-                    continue
+                    return
                 }
 
                 // skip deleted channels
                 if (channel.deleted === true) {
-                    continue
+                    return;
                 }
                 e.sender.send("addGuildChannel", channel.id, channel.name)
-            }
+            })
+
         })
     })
 
     ipcMain.on("populateChannelChat", (e, channelId) => {
-        client.channels.fetch(channelId).then((channel) => {
+        client.channels.fetch(channelId).then((channel:TextChannel) => {
             if (channel.type != "text") {
                 console.error("Error while populating channel chat: channel not of text type")
                 return
@@ -93,8 +95,8 @@ function createWindow() {
 
                     // Format date to string
                     e.sender.send("addChatMessage", msg.content,
-                                  {id: msg.author.id, name: msg.author.username, avatarURL: msg.author.avatarURL()},
-                                  {date:msg.createdAt,string:moment_date.calendar(),timestamp:moment_date.unix()});
+                        {id: msg.author.id, name: msg.author.username, avatarURL: msg.author.avatarURL()},
+                        {date:msg.createdAt,string:moment_date.calendar(),timestamp:moment_date.unix()});
                 })
             })
 
@@ -132,6 +134,7 @@ app.on("before-quit", () => {
 
 function login_request_callback() {
     win.webContents.send("loggedin", true); //prevent user from clicking button again
+    console.log("test")
 
     prompt({
         title: "Discord Bot Login",
@@ -149,8 +152,12 @@ function login_request_callback() {
                 win.webContents.send("loggedin", true);
                 discordLogin(r)
             }
+            else{
+                win.webContents.send("loggedin", false)
+            }
         }
     );
+
 }
 
 function discordLogin(token) {
@@ -169,9 +176,11 @@ function discordLogin(token) {
 client.on('ready', () => {
     win.webContents.send("botready", client.user.username, client.user.avatarURL(), client.user.tag)
 
-    for (const g of client.guilds.cache) {
-        win.webContents.send("addGuild", g[1].name, g[1].id, g[1].iconURL())
-    }
+
+    client.guilds.cache.forEach((guild)=>{
+        win.webContents.send("addGuild", guild.name, guild.id, guild.iconURL())
+    })
+
 
 })
 

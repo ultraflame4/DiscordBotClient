@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron')
+import { ipcRenderer } from 'electron'
 
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -6,7 +6,8 @@ window.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.send("LoginRequest")
     })
 
-    ipcRenderer.on("loggedin", (e,b) => {
+    ipcRenderer.on("loggedin", (e,b:boolean) => {
+        // @ts-ignore
         document.querySelector('#botTokenLogin').disabled=b;
     });
 
@@ -14,6 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.on("botready",(e,name,avatarUrl,tag)=>{
         document.getElementById("botstatushere").textContent = "Ready";
         document.getElementById("botnamehere").textContent = name;
+        // @ts-ignore
         document.getElementById("profile-area-img").src=avatarUrl
         document.getElementById("profile-area-user-name").textContent = name;
         document.getElementById("profile-area-user-id").textContent = tag;
@@ -119,7 +121,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Check if msg container has any children   | Get prev message item author Id
         if (message_container.childElementCount > 0 &&
+            // @ts-ignore
             message_container.firstChild.dataset.authorId===authorData.id &&
+            // @ts-ignore
             (message_container.firstChild.dataset.timestamp-createdTimeData.timestamp) <=300){
             // if same author, set the new message-text to same msg-text-container
 
