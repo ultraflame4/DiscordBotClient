@@ -9,6 +9,39 @@ class currentInfo{
         currentInfo.guildId=null
         currentInfo.txtChannelId=null
     }
+
+
+    static hideSidebarGuildHeader(){
+        document.getElementById("sidebar-header").style.display="none"
+    }
+
+    static showSidebarGuildHeader(){
+        document.getElementById("sidebar-header").style.display="flex"
+    }
+
+
+    static hideMemberlistPanel(){
+        document.getElementById("memberlist-panel").style.display="none"
+    }
+
+    static showMemberlistPanel(){
+        document.getElementById("memberlist-panel").style.display="flex"
+    }
+
+
+
+    static clearChatContents(){
+        document.getElementById("messages-container").innerHTML=""
+    }
+
+    static clearSidebarContents(){
+        document.getElementById("sidebar-channel-container").innerHTML=""
+    }
+
+    static scrollToBottom(){
+        let e = document.getElementById("messages-container")
+        e.scrollTop=e.scrollHeight
+    }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -34,6 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (event.key=="Enter"){
                 ipcRenderer.send("textinput-send",chattxt_input.value, currentInfo.txtChannelId)
                 chattxt_input.value=""
+                currentInfo.scrollToBottom()
             }
         })
 
@@ -53,16 +87,22 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.on("openHomeContent",()=>{
         // Update Ids to null : no channel open yet
         currentInfo.reset()
+        currentInfo.clearSidebarContents()
+        currentInfo.clearChatContents()
 
         // When in home, no member list, so hide it
-        document.getElementById("memberlist-panel").style.display="none"
-        document.getElementById("sidebar-header").style.display="none"
+        currentInfo.hideSidebarGuildHeader()
+        currentInfo.hideMemberlistPanel()
     })
 
 
 
     ipcRenderer.on("openGuildContent",(e,guildId,guildName)=>{
         currentInfo.reset()
+        currentInfo.clearSidebarContents()
+        currentInfo.showSidebarGuildHeader()
+        currentInfo.showMemberlistPanel()
+
 
         // renable member list.
         document.getElementById("memberlist-panel").style.display="flex"
@@ -77,7 +117,6 @@ window.addEventListener('DOMContentLoaded', () => {
         // clear guild channels
         let channelContainer = document.getElementById("sidebar-channel-container")
 
-        channelContainer.innerHTML=""
         // populate channels
         // console.log("populate")
         currentInfo.guildId=guildId
@@ -88,7 +127,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.on("openChannelContent",(e,channelId,channelName)=>{
         document.getElementById("chat-title").textContent = "# "+channelName
         // Clear chat elements
-        document.getElementById("messages-container").innerHTML=""
+        currentInfo.clearChatContents()
         currentInfo.txtChannelId=channelId
         ipcRenderer.send("populateChannelChat",channelId)
     })
@@ -117,6 +156,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         guildItemContainer.append(guildnameIcon)
         guildlist.append(guildItemContainer)
+
+
     })
 
     ipcRenderer.on("addGuildChannel", (e, channelId, channelName) => {
@@ -138,29 +179,36 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    ipcRenderer.on("addChatMessage",(e,text,authorData,createdTimeData)=>{
+    // M E S S A G E  A P P E N D  L I S T E N E R S
+
+    ipcRenderer.on("addChatMessage",(e,text,authorData,createdTimeData,reversed:boolean=false)=>{
         let message_container = document.getElementById("messages-container")
 
         let message_item;
         let message_content;
         let message_text_container;
 
+        let prev_item;
+        if (!reversed){
+            prev_item=message_container.firstChild
+        }
+        else {prev_item=message_container.lastChild}
+
         // Check if msg container has any children   | Get prev message item author Id
         if (message_container.childElementCount > 0 &&
             // @ts-ignore
-            message_container.firstChild.dataset.authorId===authorData.id &&
+            prev_item.dataset.authorId===authorData.id &&
             // @ts-ignore
-            (message_container.firstChild.dataset.timestamp-createdTimeData.timestamp) <=300){
+            (prev_item.dataset.timestamp-createdTimeData.timestamp) <=300){
             // if same author, set the new message-text to same msg-text-container
 
-            message_item = message_container.firstChild
+            message_item = prev_item
             message_content = message_item.lastChild
             message_text_container = message_content.lastChild
 
         }
         else{
             // else construct new message item
-
             message_item = document.createElement("div")
             message_item.className = "message-container-item row"
             message_item.dataset.authorId = authorData.id
@@ -195,7 +243,13 @@ window.addEventListener('DOMContentLoaded', () => {
             message_content.append(message_text_container)
 
             message_item.append(message_content)
-            message_container.insertBefore(message_item,message_container.firstChild)
+
+            if (!reversed){
+                message_container.insertBefore(message_item,message_container.firstChild)
+            }
+            else {
+                message_container.append(message_item)
+            }
 
         }
 
@@ -204,9 +258,13 @@ window.addEventListener('DOMContentLoaded', () => {
         message_text.textContent = text
 
         // appends
-
-        message_text_container.insertBefore(message_text,message_text_container.firstChild)
-
+        if (!reversed){
+            message_text_container.insertBefore(message_text,message_text_container.firstChild)
+        }
+        else{
+            message_text_container.append(message_text)
+        }
+        currentInfo.scrollToBottom()
 
     })
 

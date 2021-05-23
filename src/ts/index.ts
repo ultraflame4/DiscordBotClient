@@ -41,7 +41,10 @@ function createWindow() {
         }
         console.log("Sending ",text_input,"to ",channelId)
         client.channels.fetch(channelId).then((channel:Discord.TextChannel)=>{
-            channel.send(text_input)
+            channel.send(text_input).catch((reason)=>{
+                console.log("Error sending message")
+                console.log(reason)
+            })
         })
 
     })
@@ -101,8 +104,8 @@ function createWindow() {
             }
 
             channel.messages.fetch({limit: 50}).then((messages) => {
-                messages.forEach((msg, msgId) => {
-                    // note: oldest text comes first.
+                messages.forEach((msg, msgId) => { // note: oldest text comes first.
+
                     let moment_date = moment(msg.createdAt)
 
                     // Format date to string
@@ -169,6 +172,7 @@ function login_request_callback() {
             }
         }
     );
+
 }
 
 function discordLogin(token) {
@@ -195,3 +199,10 @@ client.on('ready', () => {
 
 })
 
+client.on('message',(msg)=>{
+    console.log("new message!")
+    let moment_date = moment(msg.createdAt)
+    win.webContents.send("addChatMessage", msg.content,
+        {id: msg.author.id, name: msg.author.username, avatarURL: msg.author.avatarURL()},
+        {date:msg.createdAt,string:moment_date.calendar(),timestamp:moment_date.unix()},true);
+})

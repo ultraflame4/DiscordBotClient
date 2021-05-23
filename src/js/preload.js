@@ -9,6 +9,28 @@ var currentInfo = /** @class */ (function () {
         currentInfo.guildId = null;
         currentInfo.txtChannelId = null;
     };
+    currentInfo.hideSidebarGuildHeader = function () {
+        document.getElementById("sidebar-header").style.display = "none";
+    };
+    currentInfo.showSidebarGuildHeader = function () {
+        document.getElementById("sidebar-header").style.display = "flex";
+    };
+    currentInfo.hideMemberlistPanel = function () {
+        document.getElementById("memberlist-panel").style.display = "none";
+    };
+    currentInfo.showMemberlistPanel = function () {
+        document.getElementById("memberlist-panel").style.display = "flex";
+    };
+    currentInfo.clearChatContents = function () {
+        document.getElementById("messages-container").innerHTML = "";
+    };
+    currentInfo.clearSidebarContents = function () {
+        document.getElementById("sidebar-channel-container").innerHTML = "";
+    };
+    currentInfo.scrollToBottom = function () {
+        var e = document.getElementById("messages-container");
+        e.scrollTop = e.scrollHeight;
+    };
     currentInfo.guildId = null;
     currentInfo.txtChannelId = null;
     return currentInfo;
@@ -32,6 +54,7 @@ window.addEventListener('DOMContentLoaded', function () {
             if (event.key == "Enter") {
                 electron_1.ipcRenderer.send("textinput-send", chattxt_input.value, currentInfo.txtChannelId);
                 chattxt_input.value = "";
+                currentInfo.scrollToBottom();
             }
         });
     });
@@ -44,12 +67,17 @@ window.addEventListener('DOMContentLoaded', function () {
     electron_1.ipcRenderer.on("openHomeContent", function () {
         // Update Ids to null : no channel open yet
         currentInfo.reset();
+        currentInfo.clearSidebarContents();
+        currentInfo.clearChatContents();
         // When in home, no member list, so hide it
-        document.getElementById("memberlist-panel").style.display = "none";
-        document.getElementById("sidebar-header").style.display = "none";
+        currentInfo.hideSidebarGuildHeader();
+        currentInfo.hideMemberlistPanel();
     });
     electron_1.ipcRenderer.on("openGuildContent", function (e, guildId, guildName) {
         currentInfo.reset();
+        currentInfo.clearSidebarContents();
+        currentInfo.showSidebarGuildHeader();
+        currentInfo.showMemberlistPanel();
         // renable member list.
         document.getElementById("memberlist-panel").style.display = "flex";
         var sidebar_header = document.getElementById("sidebar-header-guildname");
@@ -62,7 +90,6 @@ window.addEventListener('DOMContentLoaded', function () {
         }
         // clear guild channels
         var channelContainer = document.getElementById("sidebar-channel-container");
-        channelContainer.innerHTML = "";
         // populate channels
         // console.log("populate")
         currentInfo.guildId = guildId;
@@ -71,7 +98,7 @@ window.addEventListener('DOMContentLoaded', function () {
     electron_1.ipcRenderer.on("openChannelContent", function (e, channelId, channelName) {
         document.getElementById("chat-title").textContent = "# " + channelName;
         // Clear chat elements
-        document.getElementById("messages-container").innerHTML = "";
+        currentInfo.clearChatContents();
         currentInfo.txtChannelId = channelId;
         electron_1.ipcRenderer.send("populateChannelChat", channelId);
     });
@@ -107,19 +134,28 @@ window.addEventListener('DOMContentLoaded', function () {
         });
         channel_container.append(channel_block);
     });
-    electron_1.ipcRenderer.on("addChatMessage", function (e, text, authorData, createdTimeData) {
+    // M E S S A G E  A P P E N D  L I S T E N E R S
+    electron_1.ipcRenderer.on("addChatMessage", function (e, text, authorData, createdTimeData, reversed) {
+        if (reversed === void 0) { reversed = false; }
         var message_container = document.getElementById("messages-container");
         var message_item;
         var message_content;
         var message_text_container;
+        var prev_item;
+        if (!reversed) {
+            prev_item = message_container.firstChild;
+        }
+        else {
+            prev_item = message_container.lastChild;
+        }
         // Check if msg container has any children   | Get prev message item author Id
         if (message_container.childElementCount > 0 &&
             // @ts-ignore
-            message_container.firstChild.dataset.authorId === authorData.id &&
+            prev_item.dataset.authorId === authorData.id &&
             // @ts-ignore
-            (message_container.firstChild.dataset.timestamp - createdTimeData.timestamp) <= 300) {
+            (prev_item.dataset.timestamp - createdTimeData.timestamp) <= 300) {
             // if same author, set the new message-text to same msg-text-container
-            message_item = message_container.firstChild;
+            message_item = prev_item;
             message_content = message_item.lastChild;
             message_text_container = message_content.lastChild;
         }
@@ -150,13 +186,24 @@ window.addEventListener('DOMContentLoaded', function () {
             message_content.append(message_content_header);
             message_content.append(message_text_container);
             message_item.append(message_content);
-            message_container.insertBefore(message_item, message_container.firstChild);
+            if (!reversed) {
+                message_container.insertBefore(message_item, message_container.firstChild);
+            }
+            else {
+                message_container.append(message_item);
+            }
         }
         var message_text = document.createElement("div");
         message_text.className = "message-text row";
         message_text.textContent = text;
         // appends
-        message_text_container.insertBefore(message_text, message_text_container.firstChild);
+        if (!reversed) {
+            message_text_container.insertBefore(message_text, message_text_container.firstChild);
+        }
+        else {
+            message_text_container.append(message_text);
+        }
+        currentInfo.scrollToBottom();
     });
 });
 document.addEventListener("keydown", function (e) {

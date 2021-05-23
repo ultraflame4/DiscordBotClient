@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
-var prompt = require("electron-prompt");
 var path = require("path");
 var moment = require("moment");
 var Discord = require("discord.js");
@@ -29,7 +28,10 @@ function createWindow() {
         }
         console.log("Sending ", text_input, "to ", channelId);
         client.channels.fetch(channelId).then(function (channel) {
-            channel.send(text_input);
+            channel.send(text_input).catch(function (reason) {
+                console.log("Error sending message");
+                console.log(reason);
+            });
         });
     });
     // Requests to open content listeners
@@ -72,7 +74,6 @@ function createWindow() {
             }
             channel.messages.fetch({ limit: 50 }).then(function (messages) {
                 messages.forEach(function (msg, msgId) {
-                    // note: oldest text comes first.
                     var moment_date = moment(msg.createdAt);
                     // Format date to string
                     e.sender.send("addChatMessage", msg.content, { id: msg.author.id, name: msg.author.username, avatarURL: msg.author.avatarURL() }, { date: msg.createdAt, string: moment_date.calendar(), timestamp: moment_date.unix() });
@@ -101,25 +102,29 @@ electron_1.app.on("before-quit", function () {
 function login_request_callback() {
     win.webContents.send("loggedin", true); //prevent user from clicking button again
     console.log("test");
-    prompt({
-        title: "Discord Bot Login",
-        label: "Token: ",
-        type: "input",
-        alwaysOnTop: true,
-        skipTaskbar: false,
-        inputAttrs: {
-            type: "password",
-            required: true
-        }
-    }).then(function (r) {
-        if (r !== null) {
-            win.webContents.send("loggedin", true);
-            discordLogin(r);
-        }
-        else {
-            win.webContents.send("loggedin", false);
-        }
-    });
+    client.login("NzAxMDE2MTY0MjcyMzA4MzA0.XprWLQ.AUDL5VNhkjFwb8cal2d99tXi4x8");
+    // TODO UNDO
+    // prompt({
+    //     title: "Discord Bot Login",
+    //     label: "Token: ",
+    //     type: "input",
+    //     alwaysOnTop: true,
+    //     skipTaskbar: false,
+    //     inputAttrs: {
+    //         type: "password",
+    //         required: true
+    //     }
+    // }).then(
+    //     (r) => {
+    //         if (r !== null) {
+    //             win.webContents.send("loggedin", true);
+    //             discordLogin(r)
+    //         }
+    //         else{
+    //             win.webContents.send("loggedin", false)
+    //         }
+    //     }
+    // );
 }
 function discordLogin(token) {
     if (token === null) {
@@ -134,5 +139,10 @@ client.on('ready', function () {
     client.guilds.cache.forEach(function (guild) {
         win.webContents.send("addGuild", guild.name, guild.id, guild.iconURL());
     });
+});
+client.on('message', function (msg) {
+    console.log("new message!");
+    var moment_date = moment(msg.createdAt);
+    win.webContents.send("addChatMessage", msg.content, { id: msg.author.id, name: msg.author.username, avatarURL: msg.author.avatarURL() }, { date: msg.createdAt, string: moment_date.calendar(), timestamp: moment_date.unix() }, true);
 });
 //# sourceMappingURL=index.js.map
