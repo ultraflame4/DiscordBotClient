@@ -1,6 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
+var currentInfo = /** @class */ (function () {
+    function currentInfo() {
+    }
+    currentInfo.reset = function () {
+        // Update Ids to null : no channel open yet
+        currentInfo.guildId = null;
+        currentInfo.txtChannelId = null;
+    };
+    currentInfo.guildId = null;
+    currentInfo.txtChannelId = null;
+    return currentInfo;
+}());
 window.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#botTokenLogin').addEventListener('click', function () {
         electron_1.ipcRenderer.send("LoginRequest");
@@ -14,6 +26,14 @@ window.addEventListener('DOMContentLoaded', function () {
         document.getElementById("profile-area-img").src = avatarUrl;
         document.getElementById("profile-area-user-name").textContent = name;
         document.getElementById("profile-area-user-id").textContent = tag;
+        // setup listener for chat-textinput
+        var chattxt_input = document.getElementById("chat-textinput");
+        chattxt_input.addEventListener("keyup", function (event) {
+            if (event.key == "Enter") {
+                electron_1.ipcRenderer.send("textinput-send", chattxt_input.value, currentInfo.txtChannelId);
+                chattxt_input.value = "";
+            }
+        });
     });
     // Add click event listener for home
     document.getElementById("guild-home").addEventListener("click", function () {
@@ -22,11 +42,14 @@ window.addEventListener('DOMContentLoaded', function () {
     });
     // Open Content Listeners
     electron_1.ipcRenderer.on("openHomeContent", function () {
+        // Update Ids to null : no channel open yet
+        currentInfo.reset();
         // When in home, no member list, so hide it
         document.getElementById("memberlist-panel").style.display = "none";
         document.getElementById("sidebar-header").style.display = "none";
     });
     electron_1.ipcRenderer.on("openGuildContent", function (e, guildId, guildName) {
+        currentInfo.reset();
         // renable member list.
         document.getElementById("memberlist-panel").style.display = "flex";
         var sidebar_header = document.getElementById("sidebar-header-guildname");
@@ -42,12 +65,14 @@ window.addEventListener('DOMContentLoaded', function () {
         channelContainer.innerHTML = "";
         // populate channels
         // console.log("populate")
+        currentInfo.guildId = guildId;
         electron_1.ipcRenderer.send("populateGuildChannel", guildId);
     });
     electron_1.ipcRenderer.on("openChannelContent", function (e, channelId, channelName) {
         document.getElementById("chat-title").textContent = "# " + channelName;
         // Clear chat elements
         document.getElementById("messages-container").innerHTML = "";
+        currentInfo.txtChannelId = channelId;
         electron_1.ipcRenderer.send("populateChannelChat", channelId);
     });
     // addContent Listeners

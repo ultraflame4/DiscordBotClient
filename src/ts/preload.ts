@@ -1,5 +1,15 @@
 import { ipcRenderer } from 'electron'
 
+class currentInfo{
+    static guildId :string|null = null
+    static txtChannelId :string|null = null
+
+    static reset(){
+        // Update Ids to null : no channel open yet
+        currentInfo.guildId=null
+        currentInfo.txtChannelId=null
+    }
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#botTokenLogin').addEventListener('click', () => {
@@ -17,6 +27,17 @@ window.addEventListener('DOMContentLoaded', () => {
         (<HTMLImageElement>document.getElementById("profile-area-img")).src=avatarUrl
         document.getElementById("profile-area-user-name").textContent = name;
         document.getElementById("profile-area-user-id").textContent = tag;
+
+        // setup listener for chat-textinput
+        let chattxt_input=(<HTMLInputElement>document.getElementById("chat-textinput"))
+        chattxt_input.addEventListener("keyup",(event:KeyboardEvent)=>{
+            if (event.key=="Enter"){
+                ipcRenderer.send("textinput-send",chattxt_input.value, currentInfo.txtChannelId)
+                chattxt_input.value=""
+            }
+        })
+
+
     })
 
     // Add click event listener for home
@@ -30,6 +51,9 @@ window.addEventListener('DOMContentLoaded', () => {
     // Open Content Listeners
 
     ipcRenderer.on("openHomeContent",()=>{
+        // Update Ids to null : no channel open yet
+        currentInfo.reset()
+
         // When in home, no member list, so hide it
         document.getElementById("memberlist-panel").style.display="none"
         document.getElementById("sidebar-header").style.display="none"
@@ -38,6 +62,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     ipcRenderer.on("openGuildContent",(e,guildId,guildName)=>{
+        currentInfo.reset()
+
         // renable member list.
         document.getElementById("memberlist-panel").style.display="flex"
         let sidebar_header = document.getElementById("sidebar-header-guildname")
@@ -54,6 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
         channelContainer.innerHTML=""
         // populate channels
         // console.log("populate")
+        currentInfo.guildId=guildId
         ipcRenderer.send("populateGuildChannel",guildId)
 
     })
@@ -62,6 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById("chat-title").textContent = "# "+channelName
         // Clear chat elements
         document.getElementById("messages-container").innerHTML=""
+        currentInfo.txtChannelId=channelId
         ipcRenderer.send("populateChannelChat",channelId)
     })
 

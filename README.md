@@ -1,6 +1,9 @@
 # DiscordBotClient
 A gui client for your discord bot
 
+### Warning:
+This branch is still heavily underdevelopment,
+some features may not work correctly or as intended.
 
 ### Features
 - discord like ui
@@ -10,6 +13,7 @@ A gui client for your discord bot
 
 
 ### Planned Features:
+
 - Live message updates
 - Message history support
 - Ability to send messages

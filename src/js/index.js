@@ -21,7 +21,18 @@ function createWindow() {
         win.webContents.toggleDevTools();
     });
     electron_1.ipcMain.on("LoginRequest", login_request_callback);
-    // Requests to open contet listeners
+    // Send chat text input listener
+    electron_1.ipcMain.on("textinput-send", function (e, text_input, channelId) {
+        if (channelId === null) {
+            console.log("No channel open");
+            return;
+        }
+        console.log("Sending ", text_input, "to ", channelId);
+        client.channels.fetch(channelId).then(function (channel) {
+            channel.send(text_input);
+        });
+    });
+    // Requests to open content listeners
     electron_1.ipcMain.on("requestOpenGuildContent", function (e, guild_id) {
         if (guild_id === "home") { //check if user is opening the "home"
             e.sender.send("openHomeContent"); // if opening home, send required data for home

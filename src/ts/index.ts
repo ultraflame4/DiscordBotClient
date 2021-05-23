@@ -32,7 +32,24 @@ function createWindow() {
     ipcMain.on("LoginRequest", login_request_callback)
 
 
-    // Requests to open contet listeners
+
+    // Send chat text input listener
+    ipcMain.on("textinput-send",(e,text_input,channelId)=>{
+        if (channelId===null){
+            console.log("No channel open")
+            return
+        }
+        console.log("Sending ",text_input,"to ",channelId)
+        client.channels.fetch(channelId).then((channel:Discord.TextChannel)=>{
+            channel.send(text_input)
+        })
+
+    })
+
+
+
+
+    // Requests to open content listeners
 
     ipcMain.on("requestOpenGuildContent", (e, guild_id) => {
         if (guild_id === "home") { //check if user is opening the "home"
@@ -152,7 +169,6 @@ function login_request_callback() {
             }
         }
     );
-
 }
 
 function discordLogin(token) {
