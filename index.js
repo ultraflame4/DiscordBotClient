@@ -3,14 +3,6 @@ const prompt = require('electron-prompt');
 const path = require('path')
 const moment = require("moment")
 
-
-
-
-
-
-
-
-
 const Discord = require('discord.js');
 const client = new Discord.Client();
 var win = null;
