@@ -17,6 +17,7 @@
 
 body {
     background-color: #6e6e6e;
+    overflow-x: hidden;
 }
 
 button {
@@ -108,4 +109,68 @@ button:disabled {
 ::-webkit-scrollbar-thumb {
     background-color: #3e3e3e;
     border-radius: 1em;
+}
+
+
+/* Shared styling */
+
+.home-options-item,.channel-container-item{
+    width: 100%;
+    padding: 0 .5em 0 .5em;
+    border-radius: .3em;
+    align-items: center;
+}
+
+
+
+
+.person-item:hover,.home-options-item:hover,.channel-container-item:hover{
+    background-color: #4a4a4a;
+}
+
+
+
+
+.person-item{
+    padding: .2em .5em .2em .5em;
+    width: 100%;
+    height: 3em;
+    border-radius: .3em;
+    align-items: center;
+    font-size: .9em;
+    margin-bottom: .1em;
+    justify-items: flex-start;
+}
+
+.person-avatar{
+    height: 2em;
+    width: 2em;
+    border-radius: 2em;
+}
+
+.person-info{
+    height: 100%;
+    margin-left: 1em;
+    align-items: flex-start;
+    overflow: hidden;
+}
+
+.person-info-name{
+    white-space: nowrap;
+}
+
+.person-info-status{
+    white-space: nowrap;
+}
+
+.panel-section-header{
+    padding: 0 .5em 0 .5em;
+    margin-top: 1em;
+    margin-bottom: .4em;
+}
+
+.panel-section-header-title{
+    font-size: .8em;
+    letter-spacing: 1px;
+    font-weight: bold;
 }

@@ -9,17 +9,26 @@ var currentInfo = /** @class */ (function () {
         currentInfo.guildId = null;
         currentInfo.txtChannelId = null;
     };
-    currentInfo.hideSidebarGuildHeader = function () {
-        document.getElementById("sidebar-header").style.display = "none";
-    };
-    currentInfo.showSidebarGuildHeader = function () {
-        document.getElementById("sidebar-header").style.display = "flex";
-    };
-    currentInfo.hideMemberlistPanel = function () {
+    currentInfo.openHomeContentPanels = function () {
+        // Update Ids to null : no channel open yet
+        currentInfo.reset();
+        currentInfo.clearSidebarContents();
+        currentInfo.clearChatContents();
+        // When in home, no member list, so hide it
+        document.getElementById("guild-sidebar-header").style.display = "none";
         document.getElementById("memberlist-panel").style.display = "none";
+        document.getElementById("sidebar-home-options").style.display = "flex";
+        document.getElementById("sidebar-home-dms-container").style.display = "flex";
+        document.getElementById("chat_content_area").style.display = "none";
     };
-    currentInfo.showMemberlistPanel = function () {
+    currentInfo.openGuildContentPanels = function () {
+        currentInfo.reset();
+        currentInfo.clearSidebarContents();
+        document.getElementById("guild-sidebar-header").style.display = "flex";
         document.getElementById("memberlist-panel").style.display = "flex";
+        document.getElementById("sidebar-home-options").style.display = "none";
+        document.getElementById("sidebar-home-dms-container").style.display = "none";
+        document.getElementById("chat_content_area").style.display = "flex";
     };
     currentInfo.clearChatContents = function () {
         document.getElementById("messages-container").innerHTML = "";
@@ -65,19 +74,10 @@ window.addEventListener('DOMContentLoaded', function () {
     });
     // Open Content Listeners
     electron_1.ipcRenderer.on("openHomeContent", function () {
-        // Update Ids to null : no channel open yet
-        currentInfo.reset();
-        currentInfo.clearSidebarContents();
-        currentInfo.clearChatContents();
-        // When in home, no member list, so hide it
-        currentInfo.hideSidebarGuildHeader();
-        currentInfo.hideMemberlistPanel();
+        currentInfo.openHomeContentPanels();
     });
     electron_1.ipcRenderer.on("openGuildContent", function (e, guildId, guildName) {
-        currentInfo.reset();
-        currentInfo.clearSidebarContents();
-        currentInfo.showSidebarGuildHeader();
-        currentInfo.showMemberlistPanel();
+        currentInfo.openGuildContentPanels();
         // renable member list.
         document.getElementById("memberlist-panel").style.display = "flex";
         var sidebar_header = document.getElementById("sidebar-header-guildname");
@@ -209,6 +209,9 @@ window.addEventListener('DOMContentLoaded', function () {
 document.addEventListener("keydown", function (e) {
     if (e.code === "F12") {
         electron_1.ipcRenderer.send("devtools");
+    }
+    if (e.code === "F5") {
+        electron_1.ipcRenderer.send("reload");
     }
 });
 //# sourceMappingURL=preload.js.map

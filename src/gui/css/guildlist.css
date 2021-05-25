@@ -7,6 +7,7 @@
     box-sizing: border-box;
     height: 100%;
     min-width: 4em;
+    max-width: 4em;
 }
 
 #guildlist_contents_area_frame {

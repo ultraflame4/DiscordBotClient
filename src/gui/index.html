@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/guildlist.css">
     <link rel="stylesheet" href="css/memberlist.css">
+    <link rel="stylesheet" href="css/person.css">
 
 </head>
 <body style="height: 100%">
@@ -38,9 +39,31 @@
         <div id="guildlist_contents_area_frame" class="row" style="flex-grow: 1;border-radius: 1em;">
             <!-- Content area -->
             <div id="sidebar" class="column">
+                <div id="sidebar-headers">
+                    <div id="guild-sidebar-header" class="row sidebar-header"><div id="sidebar-header-guildname">guild name</div></div>
+                </div>
+                
                 <div id="sidebar-contents" class="column">
-                    <div id="sidebar-header"><div id="sidebar-header-guildname">guild name</div></div>
+                    <div id="sidebar-home-options" style="width: 100%;" class="column">
+                        <div class="home-options-item row">Home</div>
+                        <div class="home-options-item row">Settings</div>
+                    </div>
+                    
+                    
+                    <div id="sidebar-home-dms-container" class="column" style="width: 100%">
+                        <div class="row panel-section-header"> <label class="panel-section-header-title">DIRECT MESSAGES</label></div>
+                        <!-- template dm -->
+                        <div class="row person-item">
+                            <input type="image" class="person-avatar" url="none">
+                            <div class="person-info column">
+                                <div class="person-info-name">test dm name here</div>
+                                <div class="person-info-status">test dm status</div>
+                            </div>
+                        </div>
+                        
+                    </div>
                     <div id="sidebar-channel-container" class="column"></div>
+                    
                 </div>
                 <div id="profile_area" class="row">
                     <img id="profile-area-img" src="none">
@@ -50,6 +73,8 @@
                     </div>
                 </div>
             </div>
+            
+            
             
             <div id="chat_content_area" class="column">
                 <div id="chat-header" class="row">
@@ -106,7 +131,13 @@
                     
                     </div>
                     <div id="memberlist-panel" class="column">
-                        memberlist panel
+                        <div class="row person-item">
+                            <input type="image" class="person-avatar" url="none">
+                            <div class="person-info column">
+                                <div class="person-info-name">test dm name here</div>
+                                <div class="person-info-status">test dm status</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

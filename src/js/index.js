@@ -7,6 +7,7 @@ var moment = require("moment");
 var Discord = require("discord.js");
 var client = new Discord.Client();
 var win = null;
+var botReady = false;
 function createWindow() {
     win = new electron_1.BrowserWindow({
         width: 1000,
@@ -19,6 +20,10 @@ function createWindow() {
     win.loadFile(path.join(__dirname, "../gui/index.html"));
     electron_1.ipcMain.on("devtools", function () {
         win.webContents.toggleDevTools();
+    });
+    electron_1.ipcMain.on("reload", function () {
+        console.log("Reload disabled due to issues.");
+        // win.reload()
     });
     electron_1.ipcMain.on("LoginRequest", login_request_callback);
     // Send chat text input listener
@@ -98,11 +103,11 @@ electron_1.app.whenReady().then(function () {
 });
 electron_1.app.on("before-quit", function () {
     // Logout of discord
+    botReady = false;
     client.destroy();
 });
 function login_request_callback() {
     win.webContents.send("loggedin", true); //prevent user from clicking button again
-    console.log("test");
     prompt({
         title: "Discord Bot Login",
         label: "Token: ",
@@ -131,11 +136,15 @@ function discordLogin(token) {
         win.webContents.send("loggedin", false);
     });
 }
-client.on('ready', function () {
-    win.webContents.send("botready", client.user.username, client.user.avatarURL(), client.user.tag);
+function populateGuildList_() {
     client.guilds.cache.forEach(function (guild) {
         win.webContents.send("addGuild", guild.name, guild.id, guild.iconURL());
     });
+}
+client.on('ready', function () {
+    botReady = true;
+    win.webContents.send("botready", client.user.username, client.user.avatarURL(), client.user.tag);
+    populateGuildList_();
 });
 client.on('message', function (msg) {
     console.log("new message!");

@@ -7,9 +7,13 @@
     background-color: #5a5a5a;
 }
 
-
-
-
+.home-options-item {
+    width: 100%;
+    margin-top: .3em;
+    font-weight: bold;
+    font-size: 1em;
+    letter-spacing: 1px;
+}
 
 #profile_area{
     align-items: center;
@@ -41,16 +45,18 @@
     flex-grow: 1;
 }
 
-
-#sidebar-header{
+.sidebar-header{
     background-color: #4f4f4f;
-
-    display: flex;
     min-height: 32px;
+    display: flex;
     padding-left: 1em;
     justify-content: flex-start;
     align-items: center;
+}
 
+
+#guild-sidebar-header{
+    display: none;
 }
 
 #sidebar-header-guildname{
@@ -59,26 +65,25 @@
 
 }
 
+#sidebar-headers{
+    width: 100%;
+}
 
-#sidebar-channel-container{
-    padding-top: .3em;
-    padding-left: .2em;
-    padding-right: .2em;
+#sidebar-contents{
+    padding: .3em .3em 0 .3em;
+
     align-items: flex-start;
 }
 
+#sidebar-channel-container{
+    width:100%
+}
+
 .channel-container-item{
-    align-items: center;
-    justify-items: flex-start;
     width: 100%;
-    padding: 0 .5em 0 .5em;
     height: 2em;
-    border-radius: .25em;
     font-size: .9em;
     margin-bottom: .1em;
-
 }
 
-.channel-container-item:hover{
-    background-color: #4a4a4a;
-}
+

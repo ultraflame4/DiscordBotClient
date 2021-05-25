@@ -11,21 +11,29 @@ class currentInfo{
     }
 
 
-    static hideSidebarGuildHeader(){
-        document.getElementById("sidebar-header").style.display="none"
-    }
+    static openHomeContentPanels(){
+        // Update Ids to null : no channel open yet
+        currentInfo.reset()
+        currentInfo.clearSidebarContents()
+        currentInfo.clearChatContents()
 
-    static showSidebarGuildHeader(){
-        document.getElementById("sidebar-header").style.display="flex"
-    }
-
-
-    static hideMemberlistPanel(){
+        // When in home, no member list, so hide it
+        document.getElementById("guild-sidebar-header").style.display="none"
         document.getElementById("memberlist-panel").style.display="none"
+        document.getElementById("sidebar-home-options").style.display="flex"
+        document.getElementById("sidebar-home-dms-container").style.display="flex"
+        document.getElementById("chat_content_area").style.display="none"
     }
 
-    static showMemberlistPanel(){
+    static openGuildContentPanels(){
+        currentInfo.reset()
+        currentInfo.clearSidebarContents()
+        document.getElementById("guild-sidebar-header").style.display="flex"
         document.getElementById("memberlist-panel").style.display="flex"
+        document.getElementById("sidebar-home-options").style.display="none"
+        document.getElementById("sidebar-home-dms-container").style.display="none"
+        document.getElementById("chat_content_area").style.display="flex"
+
     }
 
 
@@ -85,24 +93,13 @@ window.addEventListener('DOMContentLoaded', () => {
     // Open Content Listeners
 
     ipcRenderer.on("openHomeContent",()=>{
-        // Update Ids to null : no channel open yet
-        currentInfo.reset()
-        currentInfo.clearSidebarContents()
-        currentInfo.clearChatContents()
-
-        // When in home, no member list, so hide it
-        currentInfo.hideSidebarGuildHeader()
-        currentInfo.hideMemberlistPanel()
+        currentInfo.openHomeContentPanels()
     })
 
 
 
     ipcRenderer.on("openGuildContent",(e,guildId,guildName)=>{
-        currentInfo.reset()
-        currentInfo.clearSidebarContents()
-        currentInfo.showSidebarGuildHeader()
-        currentInfo.showMemberlistPanel()
-
+        currentInfo.openGuildContentPanels()
 
         // renable member list.
         document.getElementById("memberlist-panel").style.display="flex"
@@ -277,6 +274,10 @@ window.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("keydown", function (e) {
     if (e.code==="F12") {
         ipcRenderer.send("devtools")
+    }
+
+    if (e.code==="F5") {
+        ipcRenderer.send("reload")
     }
 });
 

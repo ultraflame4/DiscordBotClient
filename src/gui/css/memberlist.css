@@ -1,4 +1,7 @@
 #memberlist-panel{
+    display: none;
+    padding-left: 1em;
+
     background-color: #4a4a4a;
     width: 14em;
     min-width: 14em;

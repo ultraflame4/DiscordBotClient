@@ -10,6 +10,8 @@ import {GuildChannel, TextChannel} from "discord.js";
 const client = new Discord.Client();
 var win = null;
 
+var botReady = false
+
 function createWindow() {
 
     win = new BrowserWindow(
@@ -28,6 +30,13 @@ function createWindow() {
     ipcMain.on("devtools", () => {
         win.webContents.toggleDevTools()
     })
+
+    ipcMain.on("reload",()=>{
+        console.log("Reload disabled due to issues.")
+        // win.reload()
+    })
+
+
 
     ipcMain.on("LoginRequest", login_request_callback)
 
@@ -143,13 +152,13 @@ app.whenReady().then(() => {
 
 app.on("before-quit", () => {
     // Logout of discord
+    botReady=false
     client.destroy()
 });
 
 
 function login_request_callback() {
     win.webContents.send("loggedin", true); //prevent user from clicking button again
-    console.log("test")
 
     prompt({
         title: "Discord Bot Login",
@@ -181,21 +190,26 @@ function discordLogin(token) {
     }
 
     client.login(token).catch((r) => {
-
         win.webContents.send("loggedin", false)
     });
 
 }
 
 
-client.on('ready', () => {
-    win.webContents.send("botready", client.user.username, client.user.avatarURL(), client.user.tag)
-
-
+function populateGuildList_(){
     client.guilds.cache.forEach((guild)=>{
         win.webContents.send("addGuild", guild.name, guild.id, guild.iconURL())
     })
 
+}
+
+
+client.on('ready', () => {
+    botReady=true
+    win.webContents.send("botready", client.user.username, client.user.avatarURL(), client.user.tag)
+
+
+    populateGuildList_()
 
 })
 
