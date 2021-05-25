@@ -129,6 +129,20 @@ function createWindow() {
 
     })
 
+    ipcMain.on("populateMemberList",(e,guildId)=>{
+        client.guilds.fetch(guildId).then((guild)=>{
+            guild.members.cache.forEach((guildMember)=>{
+                e.sender.send("addMember",{
+                    id:guildMember.id,
+                    username:guildMember.user.username,
+                    avatarURL:guildMember.user.avatarURL(),
+                    status : guildMember.user.presence.status
+
+                })
+            })
+        })
+    })
+
 
 }
 

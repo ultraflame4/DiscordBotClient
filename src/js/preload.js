@@ -24,11 +24,15 @@ var currentInfo = /** @class */ (function () {
     currentInfo.openGuildContentPanels = function () {
         currentInfo.reset();
         currentInfo.clearSidebarContents();
+        currentInfo.clearMemberList();
         document.getElementById("guild-sidebar-header").style.display = "flex";
         document.getElementById("memberlist-panel").style.display = "flex";
         document.getElementById("sidebar-home-options").style.display = "none";
         document.getElementById("sidebar-home-dms-container").style.display = "none";
         document.getElementById("chat_content_area").style.display = "flex";
+    };
+    currentInfo.clearMemberList = function () {
+        document.getElementById("memberlist-panel").innerHTML = "";
     };
     currentInfo.clearChatContents = function () {
         document.getElementById("messages-container").innerHTML = "";
@@ -78,8 +82,6 @@ window.addEventListener('DOMContentLoaded', function () {
     });
     electron_1.ipcRenderer.on("openGuildContent", function (e, guildId, guildName) {
         currentInfo.openGuildContentPanels();
-        // renable member list.
-        document.getElementById("memberlist-panel").style.display = "flex";
         var sidebar_header = document.getElementById("sidebar-header-guildname");
         sidebar_header.style.display = "flex";
         if (guildName.length > 26) {
@@ -91,9 +93,10 @@ window.addEventListener('DOMContentLoaded', function () {
         // clear guild channels
         var channelContainer = document.getElementById("sidebar-channel-container");
         // populate channels
-        // console.log("populate")
         currentInfo.guildId = guildId;
         electron_1.ipcRenderer.send("populateGuildChannel", guildId);
+        // populate memberlist
+        electron_1.ipcRenderer.send("populateMemberList", guildId);
     });
     electron_1.ipcRenderer.on("openChannelContent", function (e, channelId, channelName) {
         document.getElementById("chat-title").textContent = "# " + channelName;
@@ -204,6 +207,26 @@ window.addEventListener('DOMContentLoaded', function () {
             message_text_container.append(message_text);
         }
         currentInfo.scrollToBottom();
+    });
+    electron_1.ipcRenderer.on("addMember", function (e, member) {
+        var container = document.getElementById("memberlist-panel");
+        var person_item = document.createElement("div");
+        person_item.className = "row person-item";
+        var person_item_avatar = document.createElement("input");
+        person_item_avatar.type = "image";
+        person_item_avatar.className = "person-avatar";
+        person_item_avatar.src = member.avatarURL;
+        person_item.append(person_item_avatar);
+        var person_info = document.createElement("div");
+        person_info.className = "person-info column";
+        var person_info_name = document.createElement("div");
+        person_info_name.textContent = member.username;
+        var person_info_status = document.createElement("div");
+        person_info_status.textContent = member.status;
+        person_info.append(person_info_name);
+        person_info.append(person_info_status);
+        person_item.append(person_info);
+        container.append(person_item);
     });
 });
 document.addEventListener("keydown", function (e) {

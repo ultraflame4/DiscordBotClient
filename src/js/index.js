@@ -87,6 +87,18 @@ function createWindow() {
             });
         });
     });
+    electron_1.ipcMain.on("populateMemberList", function (e, guildId) {
+        client.guilds.fetch(guildId).then(function (guild) {
+            guild.members.cache.forEach(function (guildMember) {
+                e.sender.send("addMember", {
+                    id: guildMember.id,
+                    username: guildMember.user.username,
+                    avatarURL: guildMember.user.avatarURL(),
+                    status: guildMember.user.presence.status
+                });
+            });
+        });
+    });
 }
 electron_1.app.whenReady().then(function () {
     createWindow();

@@ -28,6 +28,7 @@ class currentInfo{
     static openGuildContentPanels(){
         currentInfo.reset()
         currentInfo.clearSidebarContents()
+        currentInfo.clearMemberList()
         document.getElementById("guild-sidebar-header").style.display="flex"
         document.getElementById("memberlist-panel").style.display="flex"
         document.getElementById("sidebar-home-options").style.display="none"
@@ -36,7 +37,9 @@ class currentInfo{
 
     }
 
-
+    static clearMemberList(){
+        document.getElementById("memberlist-panel").innerHTML=""
+    }
 
     static clearChatContents(){
         document.getElementById("messages-container").innerHTML=""
@@ -101,8 +104,6 @@ window.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.on("openGuildContent",(e,guildId,guildName)=>{
         currentInfo.openGuildContentPanels()
 
-        // renable member list.
-        document.getElementById("memberlist-panel").style.display="flex"
         let sidebar_header = document.getElementById("sidebar-header-guildname")
         sidebar_header.style.display="flex"
         if (guildName.length > 26){
@@ -115,9 +116,11 @@ window.addEventListener('DOMContentLoaded', () => {
         let channelContainer = document.getElementById("sidebar-channel-container")
 
         // populate channels
-        // console.log("populate")
+
         currentInfo.guildId=guildId
         ipcRenderer.send("populateGuildChannel",guildId)
+        // populate memberlist
+        ipcRenderer.send("populateMemberList",guildId)
 
     })
 
@@ -262,6 +265,34 @@ window.addEventListener('DOMContentLoaded', () => {
             message_text_container.append(message_text)
         }
         currentInfo.scrollToBottom()
+
+    })
+
+
+    ipcRenderer.on("addMember",(e,member)=>{
+        let container = document.getElementById("memberlist-panel")
+
+        let person_item = document.createElement("div")
+        person_item.className="row person-item"
+
+        let person_item_avatar = document.createElement("input")
+        person_item_avatar.type="image";person_item_avatar.className="person-avatar";person_item_avatar.src=member.avatarURL
+        person_item.append(person_item_avatar)
+
+        let person_info = document.createElement("div")
+        person_info.className="person-info column"
+
+
+        let person_info_name = document.createElement("div")
+        person_info_name.textContent = member.username
+        let person_info_status = document.createElement("div")
+        person_info_status.textContent = member.status
+
+        person_info.append(person_info_name);person_info.append(person_info_status)
+
+        person_item.append(person_info)
+
+        container.append(person_item)
 
     })
 
