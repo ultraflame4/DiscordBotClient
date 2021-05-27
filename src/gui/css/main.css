@@ -121,13 +121,14 @@ button:disabled {
     align-items: center;
 }
 
-
+.home-options-item{
+    min-height: 2.5em;
+}
 
 
 .person-item:hover,.home-options-item:hover,.channel-container-item:hover{
     background-color: #4a4a4a;
 }
-
 
 
 

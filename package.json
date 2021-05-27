@@ -18,6 +18,8 @@
     "typescript": "^4.2.4",
     "utf-8-validate": "^5.0.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.57"
+  },
   "description": "DiscordBotClient a client for your bot"
 }
