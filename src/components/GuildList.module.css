@@ -1,0 +1,17 @@
+
+.guildlist{
+    list-style: none;
+    padding: 0.5em;
+    margin: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.guildlist::-webkit-scrollbar{
+    display: none;
+}
+
+.guildlist > li{
+    aspect-ratio: 1;
+    width: 100%;
+}

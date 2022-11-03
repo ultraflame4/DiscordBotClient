@@ -20,7 +20,8 @@
   },
   "include": [
     "electron/*",
-    "src/*"
+    "src/*",
+    "shared.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
