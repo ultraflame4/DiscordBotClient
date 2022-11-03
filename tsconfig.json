@@ -12,13 +12,15 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
+    "jsx": "preserve"
+
 
   },
-  "include": ["electron/*", "src/*"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-
-
+  "include": [
+    "electron/*",
+    "src/*"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

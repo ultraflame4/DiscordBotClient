@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "start-electron": "electron -r ts-node/register ."
+    "compile-preloads": "tsc --project electron/preload/tsconfig.json",
+    "start-electron": "npm run compile-preloads && electron -r ts-node/register ."
   },
   "dependencies": {
     "electron": "^21.2.2",
