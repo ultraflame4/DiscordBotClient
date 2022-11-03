@@ -1,12 +1,24 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-      "target": "es5",
-      "sourceMap": true,
-      "outDir": "./src/js"
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "noEmit": true,
+    "jsx": "preserve",
+
   },
-    "include": ["./src/ts/*"],
-    "exclude": [
-    "node_modules"
-  ]
+  "include": ["electron/*", "src/*"],
+  "references": [{ "path": "./tsconfig.node.json" }],
+
+
 }
