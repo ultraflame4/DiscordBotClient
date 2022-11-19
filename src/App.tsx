@@ -4,9 +4,9 @@ import {useEffect, useRef, useState} from "react";
 import {discordApi} from "./api";
 
 
-
 export default function App () {
     const [guildList,setGuildList] = useState<SimplifiedGuildInfo[]>([])
+    const [openedGuild,setOpenedGuild] = useState<SimplifiedGuildInfo|null>(null)
 
     useEffect(() => {
         discordApi.getGuildList().then(guilds => {
@@ -19,10 +19,10 @@ export default function App () {
     return (
         <div className="App">
             <div className={"guild-list"}>
-                <GuildList guilds={guildList} onSelectGuild={undefined /*todo here*/}/>
+                <GuildList guilds={guildList} onSelectGuild={(g)=>{setOpenedGuild(g)}} selectedGuild={openedGuild}/>
             </div>
             <div className={"channels-header"}>
-
+                {openedGuild?.name??"No guild open"}
             </div>
             <div className={"channels-list"}>
 
@@ -37,8 +37,6 @@ export default function App () {
             <div className={"content"}>
 
             </div>
-
-
         </div>
     )
 }
