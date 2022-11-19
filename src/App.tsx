@@ -2,6 +2,7 @@ import "./assets/App.css"
 import GuildList from "./components/GuildList";
 import {useEffect, useRef, useState} from "react";
 import {discordApi} from "./api";
+import ChannelList from "./components/ChannelList";
 
 
 export default function App () {
@@ -25,7 +26,7 @@ export default function App () {
                 {openedGuild?.name??"No guild open"}
             </div>
             <div className={"channels-list"}>
-
+                <ChannelList guildId={openedGuild?.id}/>
             </div>
             <div className={"user-info"}>
 

@@ -1,0 +1,13 @@
+
+.channelList {
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.guildBanner{
+    height: 6em;
+    width: 100%;
+    object-fit: cover;
+}
