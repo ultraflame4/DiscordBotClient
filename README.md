@@ -1,3 +1,5 @@
+# DEPRECATED BRANCH. AS OF 21/12/2022 THE CODE IN THIS BRANCH NO LONGER WORKS DUE TO BREAKING DISCORD API CHANGES!
+
 # discordpyGUI
 This python package gives you a GUI for your bot!
 - Can send messages
