@@ -11,6 +11,7 @@ const ChannelListItem = defineComponent<{ info: SimplifiedChannelInfo }>(props =
 
 export default defineComponent<{
     guildId: string
+    guildBanner?: string
 }>(props => {
     const [channels, setChannels] = useState<SimplifiedChannelInfo[]>([])
 

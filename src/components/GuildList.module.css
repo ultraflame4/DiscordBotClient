@@ -1,7 +1,7 @@
 
 .guildlist{
     list-style: none;
-    padding: 0.5em 0;
+    padding: 0.5em 0.1em;
 
     margin: 0;
     height: 100vh;
@@ -27,7 +27,7 @@
     display: flex;
     cursor: pointer;
     border-radius: 100%;
-    background: black;
+
 
     width: 100%;
     aspect-ratio: 1;
@@ -36,11 +36,13 @@
     align-items: center;
     position: relative;
     overflow: visible;
+    background: transparent;
 
 }
 
 .guildlistItem:hover,.guildlistItem[data-selected="true"]{
-    border-radius: 0.8em;
+    border-radius: 35%;
+    background: var(--accent-color);
 }
 
 .guildlist > li::before {
@@ -72,4 +74,10 @@
     width: 100%;
     height: 100%;
     border-radius: inherit;
+}
+
+.item_icon{
+    width: 100%;
+    height: 100%;
+    padding: 0.55rem;
 }
