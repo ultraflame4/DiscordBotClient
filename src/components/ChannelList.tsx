@@ -17,7 +17,7 @@ export default defineComponent<{
     useEffect(() => {
 
         if (props.guildId) {
-            discordApi.getChannelList(props.guildId).then(channels => {
+            discordApi.getGuildChannels(props.guildId).then(channels => {
                 setChannels(channels)
 
             })

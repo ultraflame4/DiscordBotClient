@@ -14,13 +14,17 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
-
+    "jsx": "preserve",
+    "types": [
+      "./shared.d.ts"
+    ]
 
   },
   "include": [
     "electron/*",
-    "src/*",
+    "src/*"
+  ],
+  "files": [
     "shared.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -15,7 +15,7 @@ if (!window.discord){
             }
             return testGuilds;
         },
-        async getChannelList(guildId: string): Promise<SimplifiedChannelInfo[]> {
+        async getGuildChannels(guildId: string): Promise<SimplifiedChannelInfo[]> {
             let testChannels: SimplifiedChannelInfo[] = []
             for (let i = 0; i < 30; i++) {
                 testChannels.push({
