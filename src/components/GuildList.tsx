@@ -40,7 +40,7 @@ export default defineComponent<props>(props => {
 
     return (<ul className={classes.guildlist}>
         <GuildListItem callback={props.onSelectGuild} selectedGuild={props.selectedGuild}
-                       guild={BotHomeGuild}/>
+                       guild={BotHomeGuild} icon={"material-symbols:robot"}/>
         {
             props.guilds.map((value, index) => {
                 return <GuildListItem key={index} guild={value} callback={props.onSelectGuild}
