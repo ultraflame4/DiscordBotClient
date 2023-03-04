@@ -11,7 +11,10 @@
 
     --bg-color: #1c1c1c;
     --surface-color: #222222;
+
     --accent-color: #ff0057;
+    --hover-color: rgba(255, 255, 255, 0.08);
+    --pressed-color: rgba(0, 0, 0, 0.3);
 }
 
 .App{

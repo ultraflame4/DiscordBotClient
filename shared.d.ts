@@ -1,25 +1,30 @@
 import {Snowflake} from "discord.js";
-import {ChannelType} from "discord-api-types/v10";
 export {};
 
 
 declare global {
+
+
     interface Window {
         discord: undefined | IPreloadDiscordApi
     }
 
+    type StringChannelType = "text" | "bot-home" | "dm" | "voice" | "category" | "news" | "unknown" | "thread"
+
     interface SimplifiedGuildInfo{ // to expand this later on as needed
         id: Snowflake,
         name: string,
-        iconUrl: string | null,
+        iconUrl: string | null
     }
 
     interface SimplifiedChannelInfo{ // to expand this later on as needed
         id: Snowflake,
         name: string,
         desc: string|null,
-        type: ChannelType
+        type: StringChannelType
     }
+
+
 
     interface IPreloadDiscordApi {
         ready: boolean;

@@ -1,4 +1,12 @@
 
+
+
+.guildBanner{
+    height: 6em;
+    width: 100%;
+    object-fit: cover;
+}
+
 .channelList {
     margin: 0;
     padding: 0;
@@ -7,8 +15,30 @@
     background: var(--surface-color);
 }
 
-.guildBanner{
-    height: 6em;
-    width: 100%;
-    object-fit: cover;
+.channelItem{
+
+    padding: 0.4em 0.5rem;
+    cursor: pointer;
+    transition: all 200ms linear;
+    border-radius: 0.5em;
+    background: transparent;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin: 0.1rem 0.25rem 0.25rem;
+
+}
+.channelItem:hover{
+    background-color: var(--hover-color);
+}
+.channelItem:active{
+    transition: all 100ms ease;
+    background-color: var(--pressed-color);
+}
+.channelItem[data-selected="true"]{
+    background-color: var(--accent-color);
+}
+
+.item_icon{
+    margin-right: 0.5rem;
+    font-size: 1em;
 }

@@ -3,7 +3,7 @@ import GuildList from "./components/GuildList";
 import {useEffect, useRef, useState} from "react";
 import {discordApi} from "./api";
 import ChannelList from "./components/ChannelList";
-import {BotHomeGuild} from "./utils";
+import {BotHomeChannels, BotHomeGuild} from "./utils";
 
 
 export default function App () {
