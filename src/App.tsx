@@ -4,6 +4,7 @@ import {useEffect, useRef, useState} from "react";
 import {discordApi} from "./api";
 import ChannelList from "./components/ChannelList";
 import {BotHomeChannels, BotHomeGuild} from "./utils";
+import BotHomeContent from "./components/BotHomeContent";
 
 
 export default function App () {
@@ -43,11 +44,11 @@ export default function App () {
 
             </div>
             <div className={"content-header"}>
-
+                {currentChannel?.name}
             </div>
 
             <div className={"content"}>
-
+                {currentChannel?.type === "bot-home" && <BotHomeContent channel_id={currentChannel.id}/>}
             </div>
         </div>
     )

@@ -79,3 +79,25 @@
     grid-row: 2 / -1;
     background-color: var(--bg-color);
 }
+
+input{
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.01rem solid transparent;
+    background-color: var(--surface-color);
+    color: white;
+    outline-color: transparent;
+    width: 20rem;
+    font-size: 0.9em;
+    font-weight: 700;
+    font-family: "Poppins";
+
+}
+
+label{
+
+    font-weight: 700;
+    font-family: "Open Sans";
+    color: white;
+    margin-right: 0.75rem;
+}
