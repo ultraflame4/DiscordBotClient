@@ -87,11 +87,13 @@ input{
     background-color: var(--surface-color);
     color: white;
     outline-color: transparent;
-    width: 20rem;
+
+
     font-size: 0.9em;
     font-weight: 700;
     font-family: "Poppins";
-
+    margin-right: 0.5rem;
+    margin-top: 0.45rem;
 }
 
 label{
@@ -100,4 +102,35 @@ label{
     font-family: "Open Sans";
     color: white;
     margin-right: 0.75rem;
+
+}
+
+button{
+    position: relative;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-family: "Poppins";
+    letter-spacing: 0.09em;
+    cursor: pointer;
+    background: var(--surface-color);
+    color: white;
+    border: 0.01rem solid var(--accent-color);
+
+    border-right-width: 0.3rem;
+    border-bottom-width: 0.3rem;
+    top: -0.1rem;
+    margin-top: 1rem;
+    transition: background 200ms linear;
+}
+button:hover{
+
+}
+button:active{
+
+    left: 0.2rem;
+    top: 0.1rem;
+
+    border-right-width: 0.1rem;
+    border-bottom-width: 0.1rem;
 }
