@@ -1,4 +1,4 @@
-import {defineComponent} from "../utils";
+import {BotHomeGuild, defineComponent} from "../utils";
 import classes from "./ChannelList.module.css";
 import {useEffect, useState} from "react";
 import {discordApi} from "../api";
@@ -10,18 +10,21 @@ const ChannelListItem = defineComponent<{ info: SimplifiedChannelInfo }>(props =
 })
 
 export default defineComponent<{
-    guildId: string|undefined
+    guildId: string
 }>(props => {
     const [channels, setChannels] = useState<SimplifiedChannelInfo[]>([])
 
-    useEffect(() => {
-
-        if (props.guildId) {
+    function UpdateChannels() {
+        if (props.guildId!==BotHomeGuild.id && discordApi.ready) {
             discordApi.getGuildChannels(props.guildId).then(channels => {
                 setChannels(channels)
 
             })
         }
+    }
+
+    useEffect(() => {
+        UpdateChannels()
     }, [props.guildId])
 
 

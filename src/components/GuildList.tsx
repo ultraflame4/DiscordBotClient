@@ -1,12 +1,9 @@
-import {defineComponent} from "../utils";
+import {BotHomeGuild, defineComponent} from "../utils";
 import {discordApi} from "../api";
 import classes from "./GuildList.module.css";
 
 const GuildListItem = defineComponent <{
-    guild: SimplifiedGuildInfo,
-    callback?:(guildId:SimplifiedGuildInfo)=>void,
-    selectedGuild: SimplifiedGuildInfo| null
-}>
+    guild: SimplifiedGuildInfo, callback?:(guildId:SimplifiedGuildInfo)=>void, selectedGuild: SimplifiedGuildInfo| null }>
     (props => {
     return (<li>
 
@@ -18,15 +15,20 @@ const GuildListItem = defineComponent <{
     </li>)
 })
 
+
+
 interface props {
     guilds: SimplifiedGuildInfo[],
     onSelectGuild?: (guildId: SimplifiedGuildInfo) => void,
     selectedGuild: SimplifiedGuildInfo | null
 }
 
+
 export default defineComponent<props>(props => {
 
     return (<ul className={classes.guildlist}>
+        <GuildListItem callback={props.onSelectGuild} selectedGuild={props.selectedGuild}
+                       guild={BotHomeGuild}/>
         {
             props.guilds.map((value, index) => {
                 return <GuildListItem key={index} guild={value} callback={props.onSelectGuild} selectedGuild={props.selectedGuild}/>

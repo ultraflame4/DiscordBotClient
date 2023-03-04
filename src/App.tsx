@@ -3,17 +3,27 @@ import GuildList from "./components/GuildList";
 import {useEffect, useRef, useState} from "react";
 import {discordApi} from "./api";
 import ChannelList from "./components/ChannelList";
+import {BotHomeGuild} from "./utils";
 
 
 export default function App () {
     const [guildList,setGuildList] = useState<SimplifiedGuildInfo[]>([])
-    const [openedGuild,setOpenedGuild] = useState<SimplifiedGuildInfo|null>(null)
+    const [openedGuild,setOpenedGuild] = useState<SimplifiedGuildInfo>(BotHomeGuild)
 
-    useEffect(() => {
+    function UpdateGuildList() {
+        if (!discordApi.ready){
+            setGuildList([])
+            return
+        }
         discordApi.getGuildList().then(guilds => {
             setGuildList(guilds)
         })
-    }, [])
+    }
+
+    useEffect(() => {
+        UpdateGuildList()
+
+    }, [discordApi.ready])
 
 
 
@@ -26,7 +36,7 @@ export default function App () {
                 {openedGuild?.name??"No guild open"}
             </div>
             <div className={"channels-list"}>
-                <ChannelList guildId={openedGuild?.id}/>
+                <ChannelList guildId={openedGuild.id}/>
             </div>
             <div className={"user-info"}>
 
