@@ -32,3 +32,9 @@ if (!window.discord){
 }
 
 export const discordApi:IPreloadDiscordApi = window.discord;
+
+export enum AuthStatus {
+    LoggedOut,
+    LoggingIn,
+    LoggedIn
+}

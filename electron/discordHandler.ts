@@ -34,3 +34,11 @@ export function loginClient(token: string): Promise<boolean> {
 
 }
 
+export function checkBotLoggedIn(): boolean {
+    return client?.isReady()??false;
+}
+
+export function logoutClient(): void {
+    client?.destroy();
+}
+

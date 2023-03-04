@@ -34,6 +34,7 @@ declare global {
         /** Returns the username of the discord bot */
         getGuildList(): Promise<SimplifiedGuildInfo[]>;
         getGuildChannels(guildId: Snowflake): Promise<SimplifiedChannelInfo[]>;
+        checkBotLoggedIn(): Promise<boolean>;
 
     }
 }

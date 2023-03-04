@@ -10,7 +10,12 @@ const discordApi: IPreloadDiscordApi = {
 
     getUsername: async () => await ipcRenderer.invoke('get-username'),
     getGuildChannels: async (guildId) => ipcRenderer.invoke('get-guild-channels', guildId),
-    getGuildList: async () => await ipcRenderer.invoke('get-guilds')
+    getGuildList: async () => await ipcRenderer.invoke('get-guilds'),
+    async checkBotLoggedIn (){
+        let r = await ipcRenderer.invoke('check-login')
+        this.ready = r;
+        return r
+    }
 
 
 }

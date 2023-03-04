@@ -1,5 +1,5 @@
 import {IpcMainInvokeEvent} from 'electron';
-import {getClient} from "./discordHandler";
+import {getClient, loginClient} from "./discordHandler";
 import {Snowflake, TextChannel} from "discord.js";
 import {ChannelType} from "discord-api-types/v10";
 
@@ -79,4 +79,8 @@ export async function getBotGuilds(e: IpcMainInvokeEvent): Promise<SimplifiedGui
             iconUrl: guild.iconURL()
         }
     })
+}
+
+export async function botLogin(e: IpcMainInvokeEvent, token: string) {
+    return await loginClient(token)
 }

@@ -1,7 +1,7 @@
 import {app, BrowserWindow, ipcMain} from "electron"
 import * as path from "path";
-import {getBotGuilds, getBotUsername, getGuildChannels} from "./controllers";
-import {loginClient} from "./discordHandler";
+import {botLogin, getBotGuilds, getBotUsername, getGuildChannels} from "./controllers";
+import {checkBotLoggedIn, logoutClient} from "./discordHandler";
 
 
 function createAppWindow() {
@@ -18,6 +18,10 @@ function createAppWindow() {
     } else {
         win.loadFile( "dist/index.html")
     }
+
+    win.on("close",event => {
+        logoutClient()
+    })
 }
 
 app.whenReady().then(() => {
@@ -25,6 +29,8 @@ app.whenReady().then(() => {
     ipcMain.handle("get-username", getBotUsername)
     ipcMain.handle("get-guild-channels", getGuildChannels)
     ipcMain.handle("get-guilds", getBotGuilds)
+    ipcMain.handle("login", botLogin)
+    ipcMain.handle("check-login",checkBotLoggedIn)
 
     createAppWindow()
 })

@@ -1,9 +1,9 @@
 import "./assets/App.css"
 import GuildList from "./components/GuildList";
-import {useEffect, useRef, useState} from "react";
-import {discordApi} from "./api";
+import {useEffect, useState} from "react";
+import {AuthStatus, discordApi} from "./api";
 import ChannelList from "./components/ChannelList";
-import {BotHomeChannels, BotHomeGuild} from "./utils";
+import {BotHomeGuild} from "./utils";
 import BotHomeContent from "./components/BotHomeContent";
 
 
@@ -11,29 +11,38 @@ export default function App() {
     const [guildList, setGuildList] = useState<SimplifiedGuildInfo[]>([])
     const [openedGuild, setOpenedGuild] = useState<SimplifiedGuildInfo>(BotHomeGuild)
     const [currentChannel, setCurrentChannel] = useState<SimplifiedChannelInfo | null>(null)
+    const [authStatus, setAuthStatus] = useState<AuthStatus>(AuthStatus.LoggedOut)
 
     function UpdateGuildList() {
-        if (!discordApi.ready) {
+        if (authStatus!==AuthStatus.LoggedIn) {
+
             setGuildList([])
             return
         }
+
         discordApi.getGuildList().then(guilds => {
             setGuildList(guilds)
         })
     }
 
     function LoginApi(token: string) {
+        setAuthStatus(AuthStatus.LoggingIn)
         discordApi.login(token).then((success) => {
             if (success) {
+                setAuthStatus(AuthStatus.LoggedIn)
                 UpdateGuildList()
                 return
             }
             alert("Login failed")
+            setAuthStatus(AuthStatus.LoggedOut)
         })
     }
 
     useEffect(() => {
-        UpdateGuildList()
+        discordApi.checkBotLoggedIn().then(value => {
+            setAuthStatus(value?AuthStatus.LoggedIn:AuthStatus.LoggedOut)
+            UpdateGuildList()
+        })
 
     }, [discordApi.ready])
 
@@ -61,7 +70,8 @@ export default function App() {
 
             <div className={"content"}>
                 {currentChannel?.type === "bot-home" &&
-                    <BotHomeContent channel_id={currentChannel.id} on_requestLogin={LoginApi}/>}
+                    <BotHomeContent channel_id={currentChannel.id} on_requestLogin={LoginApi}
+                                    authState={authStatus}/>}
             </div>
         </div>
     )
