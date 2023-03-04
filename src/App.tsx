@@ -9,6 +9,7 @@ import {BotHomeChannels, BotHomeGuild} from "./utils";
 export default function App () {
     const [guildList,setGuildList] = useState<SimplifiedGuildInfo[]>([])
     const [openedGuild,setOpenedGuild] = useState<SimplifiedGuildInfo>(BotHomeGuild)
+    const [currentChannel,setCurrentChannel] = useState<SimplifiedChannelInfo|null>(null)
 
     function UpdateGuildList() {
         if (!discordApi.ready){
@@ -36,7 +37,7 @@ export default function App () {
                 {openedGuild?.name??"No guild open"}
             </div>
             <div className={"channels-list"}>
-                <ChannelList guildId={openedGuild.id}/>
+                <ChannelList guildId={openedGuild.id} onSetCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
             </div>
             <div className={"user-info"}>
 

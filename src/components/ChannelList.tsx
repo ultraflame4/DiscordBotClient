@@ -30,7 +30,7 @@ const ChannelListItem = defineComponent<channelItemProps>(props => {
 
 
     return (<li className={classes.channelItem} data-selected={props.selectedChannel === props.info}
-                onClick={()=>props.onSelectChannel?.(props.info)}>
+                onClick={() => props.onSelectChannel?.(props.info)}>
         <InlineIcon icon={icon} className={classes.item_icon}/>
         {props.info.name}
     </li>)
@@ -40,42 +40,43 @@ const ChannelListItem = defineComponent<channelItemProps>(props => {
 interface ChannelListProps {
     guildId: string
 
+    onSetCurrentChannel(channel: SimplifiedChannelInfo): void
+
+    currentChannel: SimplifiedChannelInfo | null
 }
 
 export default defineComponent<ChannelListProps>(props => {
     const [channels, setChannels] = useState<SimplifiedChannelInfo[]>([])
-    const [openedChannel,setOpenedChannel] = useState<SimplifiedChannelInfo>(channels[0])
 
     const guildBanner = "https://picsum.photos/400"
 
     function UpdateChannels() {
         if (props.guildId === BotHomeGuild.id) {
             setChannels(BotHomeChannels)
+            props.onSetCurrentChannel(BotHomeChannels[0])
             return
         }
 
         if (discordApi.ready) {
             discordApi.getGuildChannels(props.guildId).then(channels => {
                 setChannels(channels)
+                props.onSetCurrentChannel(channels[0])
             })
         }
     }
 
     useEffect(() => {
         UpdateChannels()
-        setChannels((prev)=>{
-            setOpenedChannel(prev[0])
-            return prev
-        })
-
     }, [props.guildId])
 
     return (<ul className={classes.channelList}>
         {guildBanner ? <img className={classes.guildBanner} src={guildBanner} alt={"Guild Banner"}/> :
             <div style={{height: "3rem"}}/>}
         {
-            channels.map((value, index) => <ChannelListItem info={value} key={index}
-                                                            selectedChannel={openedChannel} onSelectChannel={(c)=>setOpenedChannel(c)}/>)
+            channels.map((value, index) =>
+                <ChannelListItem info={value} key={index}
+                                 selectedChannel={props.currentChannel}
+                                 onSelectChannel={(c) => props.onSetCurrentChannel(c)}/>)
         }
     </ul>)
 })
