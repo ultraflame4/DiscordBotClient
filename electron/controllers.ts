@@ -72,13 +72,18 @@ export async function getGuildChannels(e: IpcMainInvokeEvent, guildId: Snowflake
 
 export async function getBotGuilds(e: IpcMainInvokeEvent): Promise<SimplifiedGuildInfo[]> {
     const guilds = await getClient().guilds.fetch();
-    return guilds.map((guild, id) => {
+
+
+    return await Promise.all(guilds.map(async (guild_, id) => {
+        const guild = await guild_.fetch();
+
         return {
             id: id,
             name: guild.name,
-            iconUrl: guild.iconURL()
+            iconUrl: guild.iconURL(),
+            bannerUrl: guild.bannerURL(),
         }
-    })
+    }))
 }
 
 export async function botLogin(e: IpcMainInvokeEvent, token: string) {

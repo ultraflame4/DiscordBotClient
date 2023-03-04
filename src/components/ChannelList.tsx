@@ -39,6 +39,7 @@ const ChannelListItem = defineComponent<channelItemProps>(props => {
 
 interface ChannelListProps {
     guildId: string
+    guildBanner?: string | null
 
     onSetCurrentChannel(channel: SimplifiedChannelInfo): void
 
@@ -47,8 +48,6 @@ interface ChannelListProps {
 
 export default defineComponent<ChannelListProps>(props => {
     const [channels, setChannels] = useState<SimplifiedChannelInfo[]>([])
-
-    const guildBanner = "https://picsum.photos/400"
 
     function UpdateChannels() {
         if (props.guildId === BotHomeGuild.id) {
@@ -68,10 +67,10 @@ export default defineComponent<ChannelListProps>(props => {
     useEffect(() => {
         UpdateChannels()
     }, [props.guildId])
-
+    console.log(props.guildBanner)
     return (<ul className={classes.channelList}>
-        {guildBanner ? <img className={classes.guildBanner} src={guildBanner} alt={"Guild Banner"}/> :
-            <div style={{height: "3rem"}}/>}
+        {props.guildBanner ? <img className={classes.guildBanner} src={props.guildBanner} alt={"Guild Banner"}/> :
+            <div style={{height: "4rem"}}/>}
         {
             channels.map((value, index) =>
                 <ChannelListItem info={value} key={index}

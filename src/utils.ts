@@ -8,7 +8,8 @@ export function defineComponent<P>(component: FunctionComponent<PropsWithChildre
 export const BotHomeGuild: SimplifiedGuildInfo = {
     id: "bot-home",
     name: "Bot Home",
-    iconUrl: null
+    iconUrl: null,
+    bannerUrl: "https://picsum.photos/400",
 
 }
 

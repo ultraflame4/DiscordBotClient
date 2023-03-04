@@ -14,7 +14,8 @@ declare global {
     interface SimplifiedGuildInfo{ // to expand this later on as needed
         id: Snowflake,
         name: string,
-        iconUrl: string | null
+        iconUrl: string | null,
+        bannerUrl?: string | null,
     }
 
     interface SimplifiedChannelInfo{ // to expand this later on as needed

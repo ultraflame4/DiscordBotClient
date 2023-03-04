@@ -14,7 +14,7 @@ export default function App() {
     const [authStatus, setAuthStatus] = useState<AuthStatus>(AuthStatus.LoggedOut)
 
     function UpdateGuildList() {
-        if (authStatus!==AuthStatus.LoggedIn) {
+        if (authStatus !== AuthStatus.LoggedIn) {
             setGuildList([])
             return
         }
@@ -38,10 +38,9 @@ export default function App() {
     }
 
 
-
     useEffect(() => {
         discordApi.checkBotLoggedIn().then(value => {
-            setAuthStatus(value?AuthStatus.LoggedIn:AuthStatus.LoggedOut)
+            setAuthStatus(value ? AuthStatus.LoggedIn : AuthStatus.LoggedOut)
             console.log("Logged in: " + value)
             UpdateGuildList()
         })
@@ -60,11 +59,14 @@ export default function App() {
                     setOpenedGuild(g)
                 }} selectedGuild={openedGuild}/>
             </div>
-            <div className={"channels-header"}>
-                {openedGuild?.name ?? "No guild open"}
+            <div className={"channels-header"} data-hasbanner={!!openedGuild.bannerUrl}>
+                <span>{openedGuild?.name ?? "No guild open"}</span>
+
             </div>
             <div className={"channels-list"}>
-                <ChannelList guildId={openedGuild.id} onSetCurrentChannel={setCurrentChannel}
+                <ChannelList guildId={openedGuild.id}
+                             guildBanner={openedGuild.bannerUrl}
+                             onSetCurrentChannel={setCurrentChannel}
                              currentChannel={currentChannel}/>
             </div>
             <div className={"user-info"}>

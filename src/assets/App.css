@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
-*{
+* {
     min-height: 0;
     min-width: 0;
 
@@ -17,7 +17,7 @@
     --pressed-color: rgba(0, 0, 0, 0.3);
 }
 
-.App{
+.App {
     width: 100vw;
     height: 100vh;
     display: grid;
@@ -32,14 +32,14 @@
     background: var(--bg-color);
 }
 
-.guild-list{
+.guild-list {
     grid-column: 1 / 2;
     grid-row: 1 / -1;
     background-color: var(--bg-color);
 
 }
 
-.channels-header{
+.channels-header {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     /*background-color: rgba(0, 0, 0, 0.32);*/
@@ -50,37 +50,46 @@
     display: flex;
     align-items: center;
     z-index: 1;
-    filter: drop-shadow(1px 1px 2px black);
     border-top-left-radius: 0.5rem;
+    border-bottom: 2px solid var(--bg-color);
 }
 
-.channels-list{
+.channels-header[data-hasbanner="true"] {
+    border-color: transparent;
+}
+
+.channels-header span {
+    filter: drop-shadow(1px 1px 2px black);
+}
+
+.channels-list {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
     background-color: var(--bg-color);
     border-top-left-radius: 0.5rem;
+
 }
 
 
-.user-info{
+.user-info {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
     background-color: var(--bg-color);
 }
 
-.content-header{
+.content-header {
     grid-column: 3 / 4;
     grid-row: 1 / 2;
     background-color: var(--bg-color);
 }
 
-.content{
+.content {
     grid-column: 3 / 4;
     grid-row: 2 / -1;
     background-color: var(--bg-color);
 }
 
-input{
+input {
     padding: 0.3rem 0.5rem;
     border-radius: 0.5rem;
     border: 0.01rem solid transparent;
@@ -96,7 +105,7 @@ input{
     margin-top: 0.45rem;
 }
 
-label{
+label {
 
     font-weight: 700;
     font-family: "Open Sans";
@@ -105,7 +114,7 @@ label{
 
 }
 
-button{
+button {
     position: relative;
     padding: 0.3rem 0.5rem;
     border-radius: 0.5rem;
@@ -123,10 +132,12 @@ button{
     margin-top: 1rem;
     transition: background 200ms linear;
 }
-button:hover{
+
+button:hover {
 
 }
-button:active:not(:disabled){
+
+button:active:not(:disabled) {
 
     left: 0.2rem;
     top: 0.1rem;
@@ -134,7 +145,8 @@ button:active:not(:disabled){
     border-right-width: 0.1rem;
     border-bottom-width: 0.1rem;
 }
-button:disabled{
+
+button:disabled {
 
     border-color: var(--hover-color);
 
