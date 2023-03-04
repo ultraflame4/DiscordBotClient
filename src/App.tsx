@@ -15,10 +15,10 @@ export default function App() {
 
     function UpdateGuildList() {
         if (authStatus!==AuthStatus.LoggedIn) {
-
             setGuildList([])
             return
         }
+        console.log("Updating guild list")
 
         discordApi.getGuildList().then(guilds => {
             setGuildList(guilds)
@@ -30,7 +30,6 @@ export default function App() {
         discordApi.login(token).then((success) => {
             if (success) {
                 setAuthStatus(AuthStatus.LoggedIn)
-                UpdateGuildList()
                 return
             }
             alert("Login failed")
@@ -38,13 +37,20 @@ export default function App() {
         })
     }
 
+
+
     useEffect(() => {
         discordApi.checkBotLoggedIn().then(value => {
             setAuthStatus(value?AuthStatus.LoggedIn:AuthStatus.LoggedOut)
+            console.log("Logged in: " + value)
             UpdateGuildList()
         })
 
     }, [discordApi.ready])
+
+    useEffect(() => {
+        UpdateGuildList()
+    }, [authStatus])
 
 
     return (
