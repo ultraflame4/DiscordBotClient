@@ -126,11 +126,17 @@ button{
 button:hover{
 
 }
-button:active{
+button:active:not(:disabled){
 
     left: 0.2rem;
     top: 0.1rem;
 
     border-right-width: 0.1rem;
     border-bottom-width: 0.1rem;
+}
+button:disabled{
+
+    border-color: var(--hover-color);
+
+
 }
