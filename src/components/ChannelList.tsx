@@ -67,7 +67,7 @@ export default defineComponent<ChannelListProps>(props => {
     useEffect(() => {
         UpdateChannels()
     }, [props.guildId])
-    console.log(props.guildBanner)
+
     return (<ul className={classes.channelList}>
         {props.guildBanner ? <img className={classes.guildBanner} src={props.guildBanner} alt={"Guild Banner"}/> :
             <div style={{height: "4rem"}}/>}
