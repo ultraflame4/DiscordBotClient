@@ -8,7 +8,7 @@ import {InlineIcon} from "@iconify/react";
 interface channelItemProps {
     info: SimplifiedChannelInfo,
     icon?: string,
-    selectedChannel: SimplifiedChannelInfo
+    selectedChannel: SimplifiedChannelInfo | null
     onSelectChannel?: (channel: SimplifiedChannelInfo) => void
 }
 
