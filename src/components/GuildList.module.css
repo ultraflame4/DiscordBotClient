@@ -6,6 +6,7 @@
     margin: 0;
     height: 100vh;
     overflow-y: auto;
+
 }
 
 .guildlist::-webkit-scrollbar{
