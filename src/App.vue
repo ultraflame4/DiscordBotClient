@@ -18,6 +18,7 @@
     <div class="content-header" v-text="currentChannel?.name"/>
 
     <div class="content">
+      <BotHomeContent v-if="currentChannel?.type==='bot-home'" :channel_id="currentChannel?.id"/>
 <!--      -->
 <!--      {currentChannel?.type === "bot-home" &&-->
 <!--      <BotHomeContent channel_id={currentChannel.id} on_requestLogin={LoginApi}-->
@@ -33,6 +34,7 @@ import {BotHomeGuild} from "./utils";
 import {AuthStatus} from "./api";
 import GuildList from "./components/GuildList/GuildList.vue";
 import ChannelList from "./components/ChannelList/ChannelList.vue";
+import BotHomeContent from "./components/BotHome/BotHomeContent.vue";
 
 const guildList = ref<SimplifiedGuildInfo[]>([])
 const openedGuild = ref<SimplifiedGuildInfo>(BotHomeGuild)
