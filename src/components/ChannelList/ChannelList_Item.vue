@@ -1,6 +1,6 @@
 <template>
   <li class="channelItem" :data-selected="selectedChannel?.id === props.info.id" @click="selectThisChannel">
-    <Icon :icon="icon" class="item_icon" :inline="true"/>
+    <Icon :icon="getIcon()" class="item_icon" :inline="true"/>
     {{ props.info.name }}
   </li>
 </template>
@@ -17,7 +17,7 @@ const props = defineProps<{
 
 const selectedChannel = inject<Ref<SimplifiedChannelInfo>>('selectedChannel')
 
-const icon = props.icon ?? (props.info.type === "bot-home" ? GetBotHomeIcon(props.info.id) : getChannelIcon(props.info))
+const getIcon = ()=> props.icon ?? (props.info.type === "bot-home" ? GetBotHomeIcon(props.info.id) : getChannelIcon(props.info))
 
 function getChannelIcon(channel: SimplifiedChannelInfo): string {
 
