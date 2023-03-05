@@ -1,6 +1,5 @@
 import {contextBridge, ipcRenderer} from "electron";
 
-
 const discordApi: IPreloadDiscordApi = {
     ready: false,
     async login (token){
@@ -17,7 +16,6 @@ const discordApi: IPreloadDiscordApi = {
         this.ready = r;
         return r
     }
-
 
 }
 

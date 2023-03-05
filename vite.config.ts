@@ -1,15 +1,13 @@
-import { rmSync } from 'node:fs'
+import fs from 'fs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import electron from 'vite-plugin-electron'
-import renderer from 'vite-plugin-electron-renderer'
 import pkg from './package.json'
-import vuetify from "vite-plugin-vuetify";
+
 
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => {
-  rmSync('dist-electron', { recursive: true, force: true })
 
   const isServe = command === 'serve'
   const isBuild = command === 'build'
@@ -22,7 +20,6 @@ export default defineConfig(({ command }) => {
         {
           // Main-Process entry file of the Electron App.
           entry: 'electron/app.ts',
-
           vite: {
             build: {
               sourcemap,
@@ -31,6 +28,7 @@ export default defineConfig(({ command }) => {
               rollupOptions: {
                 external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
               },
+              emptyOutDir: false,
             },
           },
         },
@@ -46,6 +44,7 @@ export default defineConfig(({ command }) => {
               sourcemap: sourcemap ? 'inline' : undefined, // #332
               minify: isBuild,
               outDir: 'dist-electron/preload',
+              emptyOutDir: true,
               rollupOptions: {
                 external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
               },
@@ -54,13 +53,8 @@ export default defineConfig(({ command }) => {
         }
       ])
     ],
-    server: process.env.VSCODE_DEBUG && (() => {
-      const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
-      return {
-        host: url.hostname,
-        port: +url.port,
-      }
-    })(),
+
+
     clearScreen: false,
   }
 })

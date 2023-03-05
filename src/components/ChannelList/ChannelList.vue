@@ -30,11 +30,9 @@ const currentChannel = inject<Ref<SimplifiedChannelInfo>>("selectedChannel")
 function UpdateChannels() {
   if (props.guildId === BotHomeGuild.id) {
     channels.value=BotHomeChannels
-
     console.log("BotHomeChannels", BotHomeChannels)
     return
   }
-
   if (discordApi.ready) {
     discordApi.getGuildChannels(props.guildId).then(channels_=> {
       channels.value = channels_
