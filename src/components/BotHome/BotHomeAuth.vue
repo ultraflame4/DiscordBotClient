@@ -31,7 +31,15 @@ function getBtnContents() {
 
 
 function loginClient() {
-  discordApi.login(inpRef.value?.value??"")
+  authState.value = AuthStatus.LoggingIn
+  discordApi.login(inpRef.value?.value??"").then(success=>{
+    if(success){
+      authState.value = AuthStatus.LoggedIn
+    }else{
+      alert("Login Failed! Check your token and try again.")
+      authState.value = AuthStatus.LoggedOut
+    }
+  })
 
 }
 
