@@ -74,7 +74,6 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
   channels_.forEach(c => {
 
     let data = null;
-    console.log(c.parentId)
     if (c.parentId) return
 
     if (c.type === "category") {
