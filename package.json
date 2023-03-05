@@ -1,8 +1,7 @@
 {
   "name": "DiscordBotClient",
   "version": "0.0.1",
-  "main": "dist-electron/main.js",
-  "description": "A not so simple catalog app",
+  "main": "dist-electron/app.js",
   "author": "ultr42",
   "private": true,
   "debug": {
@@ -28,6 +27,8 @@
     "vue-tsc": "^1.1.7"
   },
   "dependencies": {
+    "discord-api-types": "^0.37.35",
+    "discord.js": "^14.7.1",
     "sass": "^1.58.3",
     "vite-plugin-vuetify": "^1.0.2",
     "vue-router": "^4.1.6"
