@@ -45,7 +45,7 @@ function selectThisChannel(){
   transition: all 200ms linear;
   border-radius: 0.5em;
   background: transparent;
-  font-size: 0.9em;
+  font-size: 0.85em;
   font-weight: 500;
   margin: 0.1rem 0.25rem 0.25rem;
 
@@ -62,7 +62,7 @@ function selectThisChannel(){
 }
 
 .item_icon{
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
   font-size: 1em;
 }
 

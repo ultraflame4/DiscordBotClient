@@ -17,7 +17,7 @@
 import ChannelList_Item from "./ChannelList_Item.vue";
 import {inject, Ref, ref, watch} from "vue";
 import {BotHomeChannels, BotHomeGuild} from "../../utils";
-import {discordApi} from "../../api";
+import {AuthStatus, discordApi} from "../../api";
 
 const props = defineProps<{
   guildId: string,
@@ -26,6 +26,7 @@ const props = defineProps<{
 
 const channels = ref<SimplifiedChannelInfo[]>([])
 const currentChannel = inject<Ref<SimplifiedChannelInfo>>("selectedChannel")
+const authState = inject("authStatus") as Ref<AuthStatus>;
 
 function UpdateChannels() {
   if (props.guildId === BotHomeGuild.id) {
@@ -33,7 +34,7 @@ function UpdateChannels() {
     console.log("BotHomeChannels", BotHomeChannels)
     return
   }
-  if (discordApi.ready) {
+  if (authState.value === AuthStatus.LoggedIn) {
     discordApi.getGuildChannels(props.guildId).then(channels_=> {
       channels.value = channels_
     })
@@ -74,4 +75,7 @@ watch(channels,()=>{
   background: var(--surface-color);
 }
 
+::-webkit-scrollbar{
+  width: 0;
+}
 </style>

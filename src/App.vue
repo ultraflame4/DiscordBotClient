@@ -19,19 +19,19 @@
 
     <div class="content">
       <BotHomeContent v-if="currentChannel?.type==='bot-home'" :channel_id="currentChannel?.id"/>
-<!--      -->
-<!--      {currentChannel?.type === "bot-home" &&-->
-<!--      <BotHomeContent channel_id={currentChannel.id} on_requestLogin={LoginApi}-->
-<!--                      authState={authStatus}/>}-->
+      <!--      -->
+      <!--      {currentChannel?.type === "bot-home" &&-->
+      <!--      <BotHomeContent channel_id={currentChannel.id} on_requestLogin={LoginApi}-->
+      <!--                      authState={authStatus}/>}-->
     </div>
   </div>
 
 </template>
 
 <script lang="ts" setup>
-import {provide, ref} from "vue";
+import {onMounted, provide, ref, watch} from "vue";
 import {BotHomeGuild} from "./utils";
-import {AuthStatus} from "./api";
+import {AuthStatus, discordApi} from "./api";
 import GuildList from "./components/GuildList/GuildList.vue";
 import ChannelList from "./components/ChannelList/ChannelList.vue";
 import BotHomeContent from "./components/BotHome/BotHomeContent.vue";
@@ -39,13 +39,40 @@ import BotHomeContent from "./components/BotHome/BotHomeContent.vue";
 const guildList = ref<SimplifiedGuildInfo[]>([])
 const openedGuild = ref<SimplifiedGuildInfo>(BotHomeGuild)
 
-const currentChannel = ref<SimplifiedChannelInfo|null>(null)
-const authStatus = ref<AuthStatus>(AuthStatus.LoggedOut)
+const currentChannel = ref<SimplifiedChannelInfo | null>(null)
+const authStatus = ref<AuthStatus>(AuthStatus.LoggingIn)
 
 provide("authStatus", authStatus)
 provide("selectedGuild", openedGuild)
 provide("selectedChannel", currentChannel)
 
+onMounted(() => {
+  discordApi.checkBotLoggedIn().then((loggedIn) => {
+    if (loggedIn) {
+      authStatus.value = AuthStatus.LoggedIn
+    } else {
+      authStatus.value = AuthStatus.LoggedOut
+    }
+  })
+})
+
+function UpdateGuildList() {
+  if (authStatus.value!==AuthStatus.LoggedIn) {
+    guildList.value = []
+    return
+  }
+  console.log("Updating guild list")
+
+  discordApi.getGuildList().then(guilds => {
+    guildList.value = guilds
+  })
+}
+
+watch(authStatus, (newVal) => {
+  if (newVal === AuthStatus.LoggedIn) {
+    UpdateGuildList()
+  }
+})
 
 </script>
 
@@ -86,10 +113,12 @@ provide("selectedChannel", currentChannel)
   z-index: 1;
   border-top-left-radius: 0.5rem;
   border-bottom: 2px solid var(--bg-color);
+  background: var(--surface-color);
 }
 
 .channels-header[data-hasbanner="true"] {
   border-color: transparent;
+  background: transparent;
 }
 
 .channels-header span {
