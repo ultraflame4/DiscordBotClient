@@ -40,7 +40,7 @@ export function GetBotHomeIcon(channelId: string): string {
 class ContextStorageProperty<T> {
     private ctxStore: ContextStore;
     private key: string;
-    private defaultValue: T;
+    private defaultValue: T|null;
 
     constructor(ctxStore: ContextStore, key: string, defaultValue: T|null=null) {
         this.ctxStore = ctxStore
@@ -50,6 +50,7 @@ class ContextStorageProperty<T> {
     }
 
     get(defaultVal_: T | null = null): T {
+        // @ts-ignore
         return this.ctxStore.get<T>(this.key, defaultVal_ ?? this.defaultValue)
     }
     set(val:T) {
@@ -90,4 +91,5 @@ class ContextStore {
 }
 
 export const ChannelListCtx = new ContextStore()
+//@ts-ignore
 window.ChannelListCtx=ChannelListCtx
