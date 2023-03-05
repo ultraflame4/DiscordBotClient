@@ -2,7 +2,7 @@
   <li>
 
     <a class="guildlistItem"
-       :data-selected="selectedGuild?.id == props.guild.id ? 'true' : 'false'"
+       :data-selected="selectedGuild?.id === props.guild.id ? 'true' : 'false'"
        @click="selectThisGuild"
     >
 
@@ -21,8 +21,9 @@ const props = defineProps<{
   guild: SimplifiedGuildInfo,
   icon?: string
 }>()
+
 const selectedGuild = inject<Ref<SimplifiedGuildInfo>>('selectedGuild')
-console.log(selectedGuild?.value.id, props.guild.id)
+
 function selectThisGuild(){
   selectedGuild!.value = props.guild
 }

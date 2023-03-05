@@ -44,6 +44,7 @@ const authStatus = ref<AuthStatus>(AuthStatus.LoggedOut)
 
 provide("authStatus", authStatus)
 provide("selectedGuild", openedGuild)
+provide("selectedChannel", currentChannel)
 
 
 </script>

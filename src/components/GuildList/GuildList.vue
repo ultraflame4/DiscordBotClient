@@ -2,8 +2,8 @@
   <ul class="guildlist">
     <GuildList_Item :guild="BotHomeGuild" icon="material-symbols:robot"/>
 
-    <GuildList_Item v-for="g in props.guilds"
-                    :key="g.id"
+    <GuildList_Item v-for="(g,index) in props.guilds"
+                    :key="index"
                     :guild="g"
     />
 
