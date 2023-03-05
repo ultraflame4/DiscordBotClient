@@ -4,7 +4,7 @@
     <img v-if="props.guildBanner" class="guildBanner" :src="props.guildBanner" alt="Guild Banner"/>
     <div v-else style="height:4rem"/>
     <template v-for="(c,index) in channels">
-      <ChannelCategory  v-if="isCategory(c)" :key="c.data.id" :name="c.data.name" :id="c.data.id">
+      <ChannelCategory v-if="isCategory(c)" :key="c.data.id" :name="c.data.name" :id="c.data.id">
         <ChannelList_Item v-for="(c2,index) in c.data.channels"
                           :key="c2.id"
                           :info="c2"/>
@@ -46,13 +46,19 @@ interface ChannelItemType<T> {
   position: number,
 
 }
-interface BaseChannelItemType extends ChannelItemType<any>{}
-interface CategoryItem extends ChannelItemType<CategoryGroup>{}
-interface ChannelItem extends ChannelItemType<SimplifiedChannelInfo>{}
+
+interface BaseChannelItemType extends ChannelItemType<any> {
+}
+
+interface CategoryItem extends ChannelItemType<CategoryGroup> {
+}
+
+interface ChannelItem extends ChannelItemType<SimplifiedChannelInfo> {
+}
 
 
-function isCategory(item:ChannelItemType<any>): item is CategoryItem{
-  return item.type==="category"
+function isCategory(item: ChannelItemType<any>): item is CategoryItem {
+  return item.type === "category"
 }
 
 const channels = ref<BaseChannelItemType[]>([])
@@ -67,11 +73,11 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
 
   channels_.forEach(c => {
 
-    let data=null;
+    let data = null;
 
     if (c.parentId !== null) return
 
-    if (c.type==="category"){
+    if (c.type === "category") {
       let children = channels_.filter(c2 => c2.parentId === c.id)
       children.sort((a, b) => a.position - b.position)
       data = {
@@ -87,17 +93,17 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
     channels.value.push({
       type: c.type,
       position: c.position,
-      data: data??c
+      data: data ?? c
     })
 
   })
 
   channels.value.sort((a, b) => {
     // In the discord app, channels with no category are always displayed first
-    if (a.type==="category" && b.type!=="category"){
+    if (a.type === "category" && b.type !== "category") {
       return 1
     }
-    if (b.type==="category" && a.type!=="category"){
+    if (b.type === "category" && a.type !== "category") {
       return -1
     }
     return a.position - b.position
@@ -119,8 +125,8 @@ function UpdateChannels() {
   }
 }
 
-function getFirstChannel():SimplifiedChannelInfo {
-  return channels.value.flatMap(x=>isCategory(x)?x.data.channels:x.data)[0]
+function getFirstChannel(): SimplifiedChannelInfo {
+  return channels.value.flatMap(x => isCategory(x) ? x.data.channels : x.data)[0]
 }
 
 
@@ -130,12 +136,13 @@ watch(() => props.guildId, () => {
   immediate: true
 })
 
-watch(channels,value => {
-  currentChannel!.value=ChannelListCtx.get(`opened-channel-${props.guildId}`,getFirstChannel())
+watch(channels, value => {
+  currentChannel!.value = ChannelListCtx.get(`opened-channel-${props.guildId}`, getFirstChannel())
 })
 
-watch(currentChannel!,()=>[
-  ChannelListCtx.set(`opened-channel-${props.guildId}`,currentChannel!.value)
+watch(currentChannel!, () => [
+  //have to manually do this without the helper object because guildId will be different
+  ChannelListCtx.set(`opened-channel-${props.guildId}`, currentChannel!.value)
 ])
 
 
