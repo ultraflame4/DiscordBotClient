@@ -6,14 +6,11 @@
 
     </div>
 
-    <div class="channels-header" data-hasbanner={!!openedGuild.bannerUrl}>
+    <div class="channels-header" :data-hasbanner="!!openedGuild.bannerUrl">
       <span v-text="openedGuild?.name ?? 'No guild open'"/>
     </div>
     <div class="channels-list">
-<!--      <ChannelList guildId={openedGuild.id}-->
-<!--                   guildBanner={openedGuild.bannerUrl}-->
-<!--                   onSetCurrentChannel={setCurrentChannel}-->
-<!--                   currentChannel={currentChannel}/>-->
+      <ChannelList :guildId="openedGuild.id" :guildBanner="openedGuild.bannerUrl"/>
     </div>
     <div class="user-info">
 
@@ -35,6 +32,7 @@ import {provide, ref} from "vue";
 import {BotHomeGuild} from "./utils";
 import {AuthStatus} from "./api";
 import GuildList from "./components/GuildList/GuildList.vue";
+import ChannelList from "./components/ChannelList/ChannelList.vue";
 
 const guildList = ref<SimplifiedGuildInfo[]>([])
 const openedGuild = ref<SimplifiedGuildInfo>(BotHomeGuild)

@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 
 import ChannelList_Item from "./ChannelList_Item.vue";
-import {ref, watch} from "vue";
+import {inject, Ref, ref, watch} from "vue";
 import {BotHomeChannels, BotHomeGuild} from "../../utils";
 import {discordApi} from "../../api";
 
@@ -25,28 +25,55 @@ const props = defineProps<{
 }>()
 
 const channels = ref<SimplifiedChannelInfo[]>([])
+const currentChannel = inject<Ref<SimplifiedChannelInfo>>("selectedChannel")
 
 function UpdateChannels() {
   if (props.guildId === BotHomeGuild.id) {
     channels.value=BotHomeChannels
+
+    console.log("BotHomeChannels", BotHomeChannels)
     return
   }
 
   if (discordApi.ready) {
     discordApi.getGuildChannels(props.guildId).then(channels_=> {
       channels.value = channels_
-
     })
   }
 }
 
 watch(()=>props.guildId,()=>{
   UpdateChannels()
+},{
+  immediate:true
 })
+watch(channels,()=>{
+  currentChannel!.value = channels.value[0]
+},{
+  immediate:true
+})
+
+
+
 
 
 </script>
 
 <style lang="scss" scoped>
+.guildBanner{
+  height: 6em;
+  width: 100%;
+  object-fit: cover;
+}
+
+
+.channelList {
+  margin: 0;
+
+  padding: 0;
+  overflow-y: auto;
+  height: 100%;
+  background: var(--surface-color);
+}
 
 </style>

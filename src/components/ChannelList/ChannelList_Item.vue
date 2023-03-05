@@ -1,12 +1,13 @@
 <template>
   <li class="channelItem" :data-selected="selectedChannel?.id === props.info.id" @click="selectThisChannel">
-    <InlineIcon :icon="icon" class="item_icon"/>
-    {{ props.info.name }}}
+    <Icon :icon="icon" class="item_icon" :inline="true"/>
+    {{ props.info.name }}
   </li>
 </template>
 
 <script lang="ts" setup>
 import {inject, Ref} from "vue";
+import {Icon} from "@iconify/vue";
 import {GetBotHomeIcon} from "../../utils";
 
 const props = defineProps<{
@@ -37,5 +38,32 @@ function selectThisChannel(){
 </script>
 
 <style lang="scss" scoped>
+.channelItem{
+
+  padding: 0.4em 0.5rem;
+  cursor: pointer;
+  transition: all 200ms linear;
+  border-radius: 0.5em;
+  background: transparent;
+  font-size: 0.9em;
+  font-weight: 500;
+  margin: 0.1rem 0.25rem 0.25rem;
+
+}
+.channelItem:hover{
+  background-color: var(--hover-color);
+}
+.channelItem:active{
+  transition: all 100ms ease;
+  background-color: var(--pressed-color);
+}
+.channelItem[data-selected="true"]{
+  background-color: var(--accent-color);
+}
+
+.item_icon{
+  margin-right: 0.5rem;
+  font-size: 1em;
+}
 
 </style>
