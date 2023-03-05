@@ -74,8 +74,8 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
   channels_.forEach(c => {
 
     let data = null;
-
-    if (c.parentId !== null) return
+    console.log(c.parentId)
+    if (c.parentId) return
 
     if (c.type === "category") {
       let children = channels_.filter(c2 => c2.parentId === c.id)
@@ -88,7 +88,6 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
       }
 
     }
-
 
     channels.value.push({
       type: c.type,
@@ -113,6 +112,7 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
 
 
 function UpdateChannels() {
+
   if (props.guildId === BotHomeGuild.id) {
     CategoriseChannels(BotHomeChannels)
     return
