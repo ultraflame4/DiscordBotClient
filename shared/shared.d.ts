@@ -18,7 +18,13 @@ declare global {
         id: string,
         name: string,
         desc: string|null,
-        type: StringChannelType
+        type: StringChannelType,
+        /**
+         * The id of the parent channel, if this is a child channel.
+         *
+         * Used for threads and categories (if this channel is in a category).
+         */
+        parentId?: string|null,
     }
 
 
