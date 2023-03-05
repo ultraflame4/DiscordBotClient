@@ -1,9 +1,3 @@
-import React, {FunctionComponent, PropsWithChildren} from "react";
-
-export function defineComponent<P>(component: FunctionComponent<PropsWithChildren<P>>): FunctionComponent<PropsWithChildren<P>> {
-    return component
-}
-
 
 export const BotHomeGuild: SimplifiedGuildInfo = {
     id: "bot-home",
@@ -37,4 +31,13 @@ export function GetBotHomeIcon(channelId: string): string {
         default:
             return "material-symbols:question-mark"
     }
+}
+
+/**
+ * Reactive Provider Injection Object
+ * defines an object that is reactive and used with provide/inject
+ */
+export interface IRProvInj<T>{
+    get :()=> T
+    set: (value: T) => void
 }

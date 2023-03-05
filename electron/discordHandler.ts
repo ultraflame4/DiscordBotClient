@@ -41,4 +41,3 @@ export function checkBotLoggedIn(): boolean {
 export function logoutClient(): void {
     client?.destroy();
 }
-

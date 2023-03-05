@@ -17,7 +17,6 @@ const discordApi: IPreloadDiscordApi = {
         return r
     }
 
-
 }
 
 contextBridge.exposeInMainWorld('discord', discordApi)

@@ -3,7 +3,6 @@ import * as path from "path";
 import {botLogin, getBotGuilds, getBotUsername, getGuildChannels} from "./controllers";
 import {checkBotLoggedIn, logoutClient} from "./discordHandler";
 
-
 function createAppWindow() {
     const win = new BrowserWindow({
         width: 800,
@@ -13,8 +12,8 @@ function createAppWindow() {
         }
     })
 
-    if (process.env.ELECTRON_DEV) {
-        win.loadURL("http://localhost:5173")
+    if (process.env.VITE_DEV_SERVER_URL) {
+        win.loadURL(process.env.VITE_DEV_SERVER_URL)
     } else {
         win.loadFile( "dist/index.html")
     }
