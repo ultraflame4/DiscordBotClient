@@ -1,4 +1,4 @@
-import {Client,GatewayIntentsString} from "discord.js";
+import {ChannelManager, Client, GatewayIntentsString} from "discord.js";
 
 let client: Client | null;
 
@@ -15,7 +15,6 @@ export function loginClient(token: string): Promise<boolean> {
     let client_ = new Client({
         intents: ClientIntents
     });
-
 
     return new Promise((resolve, reject) => {
         client_.on("ready", (e) => {

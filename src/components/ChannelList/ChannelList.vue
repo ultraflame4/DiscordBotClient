@@ -34,6 +34,7 @@ function UpdateChannels() {
     console.log("BotHomeChannels", BotHomeChannels)
     return
   }
+  channels.value = []
   if (authState.value === AuthStatus.LoggedIn) {
     discordApi.getGuildChannels(props.guildId).then(channels_=> {
       channels.value = channels_

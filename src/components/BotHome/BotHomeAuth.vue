@@ -1,7 +1,7 @@
 <template>
   <label for="token" >Token</label>
-  <input type="password" placeholder="Enter Bot Api token" id="token" :disabled="_disabled" ref="inpRef"/>
-  <button :disabled="_disabled" @click="loginClient">
+  <input type="password" placeholder="Enter Bot Api token" id="token" :disabled="_disabled()" ref="inpRef"/>
+  <button :disabled="_disabled()" @click="loginClient">
   {{ getBtnContents() }}
   </button>
 
@@ -16,7 +16,7 @@ const authState = inject("authStatus") as Ref<AuthStatus>;
 const inpRef = ref(null) as Ref<HTMLInputElement|null>;
 
 
-const _disabled = authState.value===AuthStatus.LoggedIn||authState.value===AuthStatus.LoggingIn
+const _disabled = ()=>authState.value===AuthStatus.LoggedIn||authState.value===AuthStatus.LoggingIn
 
 function getBtnContents() {
   switch (authState.value) {
