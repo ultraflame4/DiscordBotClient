@@ -66,6 +66,7 @@ export async function getGuildChannels(e: IpcMainInvokeEvent, guildId: Snowflake
             desc: (<TextChannel>channel).topic ?? null,
             type: convertChannelType(channel!.type),
             parentId: channel.parentId,
+            position: channel.position,
 
         }
     })

@@ -59,6 +59,7 @@ function selectThisChannel(){
 }
 .channelItem[data-selected="true"]{
   background-color: var(--accent-color);
+  color: var(--text);
 }
 
 .item_icon{

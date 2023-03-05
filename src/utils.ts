@@ -12,13 +12,15 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         id: "bot-account",
         name: "Authentication",
         desc: "",
-        type: "bot-home"
+        type: "bot-home",
+        position: 0,
     },
     {
         id: "bot-others",
         name: "Others",
         desc: "",
-        type: "bot-home"
+        type: "bot-home",
+        position: 1
     },
 ]
 export function GetBotHomeIcon(channelId: string): string {

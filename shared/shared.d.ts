@@ -25,6 +25,7 @@ declare global {
          * Used for threads and categories (if this channel is in a category).
          */
         parentId?: string|null,
+        position: number,
     }
 
 

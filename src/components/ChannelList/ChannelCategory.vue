@@ -1,29 +1,42 @@
 <template>
-  <div class="cat-title">{{ props.name }}</div>
-  <div class="cat-container">
-    <slot>
-
-    </slot>
+  <div class="cat-title" @click="expanded=!expanded">
+    <Icon class="icon" icon="ic:expand-more" inline="true" :data-expanded="expanded"/>
+    {{ props.name }}
   </div>
+  <slot v-if="expanded">
+
+  </slot>
 </template>
 
 <script lang="ts" setup>
+import {Icon} from "@iconify/vue";
+import {ref} from "vue";
 
 const props = defineProps<{
   name: string
 }>()
+
+const expanded = ref(true)
+
 
 </script>
 
 <style lang="scss">
 
 .cat-title {
-  padding: 0.5rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.25rem;
   font-size: 0.8em;
   font-weight: 700;
+  user-select: none;
+}
+.cat-title:hover {
+  color: var(--text);
+  cursor: pointer;
+}
+.icon[data-expanded="false"] {
+  transform: rotate(-90deg);
 }
 
-.cat-container {
 
-}
+
 </style>
