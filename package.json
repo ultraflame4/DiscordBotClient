@@ -1,25 +1,30 @@
 {
-  "name": "discordbotclient",
-  "version": "0.0.3",
-  "main": "src/js/index.js",
+  "name": "a",
+  "private": true,
+  "version": "0.0.0",
+  "main": "electron/app.ts",
   "scripts": {
-    "start": "electron ."
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "compile-preloads": "tsc --project electron/preload/tsconfig.json",
+    "start-electron": "npm run compile-preloads && electron -r ts-node/register ."
   },
-  "keywords": [],
-  "author": "ultraflame4",
-  "license": "MIT",
   "dependencies": {
-    "bufferutil": "^4.0.3",
-    "discord.js": "^12.5.3",
-    "electron": "^12.0.9",
-    "electron-prompt": "^1.6.2",
-    "erlpack": "^0.1.3",
-    "moment": "^2.29.1",
-    "typescript": "^4.2.4",
-    "utf-8-validate": "^5.0.5"
+    "discord-api-types": "^0.37.35",
+    "discord.js": "^14.7.1",
+    "electron": "^23.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ts-node": "^10.9.1",
+    "ultr42-react-components": "^0.1.2"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.57"
-  },
-  "description": "DiscordBotClient a client for your bot"
+    "@iconify/react": "^4.1.0",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
+  }
 }
