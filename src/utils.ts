@@ -1,3 +1,4 @@
+import {Ref, ref, UnwrapRef, watch} from "vue";
 
 export const BotHomeGuild: SimplifiedGuildInfo = {
     id: "bot-home",
@@ -23,6 +24,7 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         position: 1
     },
 ]
+
 export function GetBotHomeIcon(channelId: string): string {
     switch (channelId) {
         case "bot-account":
@@ -35,11 +37,56 @@ export function GetBotHomeIcon(channelId: string): string {
     }
 }
 
-/**
- * Reactive Provider Injection Object
- * defines an object that is reactive and used with provide/inject
- */
-export interface IRProvInj<T>{
-    get :()=> T
-    set: (value: T) => void
+class ContextStorageProperty<T> {
+    private ctxStore: ContextStorage;
+    private key: string;
+    private defaultValue: T;
+
+    constructor(ctxStore: ContextStorage, key: string, defaultValue: T|null=null) {
+        this.ctxStore = ctxStore
+        this.key = key;
+        this.defaultValue = defaultValue;
+
+    }
+
+    get(defaultVal_: T | null = null): T {
+        return this.ctxStore.get<T>(this.key, defaultVal_ ?? this.defaultValue)
+    }
+    set(val:T) {
+        this.ctxStore.set<T>(this.key, val)
+    }
 }
+
+class ContextStorage {
+    private data: Record<string, any> = {}
+
+    constructor() {
+        this.data = {}
+    }
+
+    set<T>(key: string, value: any) {
+        this.data[key] = value
+    }
+
+    get<T>(key: string, default_: T): T {
+        return this.data[key] ?? default_
+    }
+
+    use<T>(key:string,default_val: T|null=null){
+        return new ContextStorageProperty<T>(this,key,default_val)
+    }
+
+    /**
+     * Like this.use(), but returns a ref, and watches it for changes. When there are changes, also calls set
+     * @param key
+     * @param default_val
+     */
+    useRef<T>(key:string,default_val: T):Ref<UnwrapRef<T>>{
+        let val = this.use(key,default_val)
+        let valRef = ref<T>(default_val)
+        watch(valRef,value => valRef.value)
+        return valRef
+    }
+}
+
+export const ChannelListCtx = new ContextStorage()

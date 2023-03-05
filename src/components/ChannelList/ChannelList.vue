@@ -4,7 +4,7 @@
     <img v-if="props.guildBanner" class="guildBanner" :src="props.guildBanner" alt="Guild Banner"/>
     <div v-else style="height:4rem"/>
     <template v-for="(c,index) in channels">
-      <ChannelCategory  v-if="isCategory(c)" :key="c.data.id" :name="c.data.name" >
+      <ChannelCategory  v-if="isCategory(c)" :key="c.data.id" :name="c.data.name" :id="c.data.id">
         <ChannelList_Item v-for="(c2,index) in c.data.channels"
                           :key="c2.id"
                           :info="c2"/>
@@ -24,8 +24,8 @@
 import ChannelList_Item from "./ChannelList_Item.vue";
 import ChannelCategory from "./ChannelCategory.vue";
 
-import {inject, Ref, ref, watch} from "vue";
-import {BotHomeChannels, BotHomeGuild} from "../../utils";
+import {inject, onBeforeUnmount, Ref, ref, watch, watchPostEffect} from "vue";
+import {BotHomeChannels, BotHomeGuild, ChannelListCtx} from "../../utils";
 import {AuthStatus, discordApi} from "../../api";
 
 const props = defineProps<{
@@ -54,7 +54,6 @@ interface ChannelItem extends ChannelItemType<SimplifiedChannelInfo>{}
 function isCategory(item:ChannelItemType<any>): item is CategoryItem{
   return item.type==="category"
 }
-
 
 const channels = ref<BaseChannelItemType[]>([])
 
@@ -98,8 +97,12 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
     if (a.type==="category" && b.type!=="category"){
       return 1
     }
+    if (b.type==="category" && a.type!=="category"){
+      return -1
+    }
     return a.position - b.position
   })
+
 }
 
 
@@ -116,12 +119,24 @@ function UpdateChannels() {
   }
 }
 
+function getFirstChannel():SimplifiedChannelInfo {
+  return channels.value.flatMap(x=>isCategory(x)?x.data.channels:x.data)[0]
+}
+
+
 watch(() => props.guildId, () => {
   UpdateChannels()
-
 }, {
   immediate: true
 })
+
+watch(channels,value => {
+  currentChannel!.value=ChannelListCtx.get(`opened-channel-${props.guildId}`,getFirstChannel())
+})
+
+watch(currentChannel!,()=>[
+  ChannelListCtx.set(`opened-channel-${props.guildId}`,currentChannel!.value)
+])
 
 
 </script>

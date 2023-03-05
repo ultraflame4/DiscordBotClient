@@ -10,14 +10,15 @@
 
 <script lang="ts" setup>
 import {Icon} from "@iconify/vue";
-import {ref} from "vue";
+import {ChannelListCtx} from "../../utils";
 
 const props = defineProps<{
+  id:string,
   name: string
 }>()
 
-const expanded = ref(true)
 
+const expanded = ChannelListCtx.useRef(`category-${props.id}-expanded`,true)
 
 </script>
 
