@@ -7,11 +7,14 @@
       <ChannelCategory v-if="isCategory(c)" :key="c.data.id" :name="c.data.name" :id="c.data.id">
         <ChannelList_Item v-for="(c2,index) in c.data.channels"
                           :key="c2.id"
-                          :info="c2"/>
+                          :info="c2"
+                          :viewable="c2.viewable"
+        />
 
       </ChannelCategory>
       <ChannelList_Item v-else :key="c.data.id"
-                        :info="c.data"/>
+                        :info="c.data"
+                        :viewable="c.data.viewable"/>
 
     </template>
 

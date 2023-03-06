@@ -71,7 +71,7 @@ export async function getGuildChannels(e: IpcMainInvokeEvent, guildId: Snowflake
             type: convertChannelType(channel!.type),
             parentId: channel.parentId,
             position: channel.position,
-
+            viewable: channel.viewable
         }
     })
 }

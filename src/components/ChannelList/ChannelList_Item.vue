@@ -1,5 +1,5 @@
 <template>
-  <li class="channelItem" :data-selected="selectedChannel?.id === props.info.id" @click="selectThisChannel">
+  <li class="channelItem" :data-selected="selectedChannel?.id === props.info.id" @click="selectThisChannel" :data-viewable="props.viewable">
     <Icon :icon="getIcon()" class="item_icon" :inline="true"/>
     {{ props.info.name }}
   </li>
@@ -12,6 +12,7 @@ import {GetBotHomeIcon} from "../../utils";
 
 const props = defineProps<{
   info: SimplifiedChannelInfo,
+  viewable?: boolean,
   icon?: string
 }>()
 
@@ -32,6 +33,7 @@ function getChannelIcon(channel: SimplifiedChannelInfo): string {
   }
 }
 function selectThisChannel(){
+  if (!props.viewable) return
   selectedChannel!.value = props.info
 }
 
@@ -57,10 +59,22 @@ function selectThisChannel(){
   transition: all 100ms ease;
   background-color: var(--pressed-color);
 }
+
+.channelItem:not([data-viewable="true"]):active{
+  background: var(--hover-color);
+}
+.channelItem:not([data-viewable="true"]){
+  font-style: italic;
+  color: var(--bg-color);
+  cursor: not-allowed;
+
+}
+
 .channelItem[data-selected="true"]{
   background-color: var(--accent-color);
   color: var(--text);
 }
+
 
 .item_icon{
   margin-right: 0.25rem;

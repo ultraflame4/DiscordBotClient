@@ -26,6 +26,7 @@ declare global {
          */
         parentId?: string|null,
         position: number,
+        viewable:boolean
     }
 
     interface SimplifiedMessageItem{
