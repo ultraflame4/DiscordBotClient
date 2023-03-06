@@ -65,7 +65,7 @@ function selectThisChannel(){
 }
 .channelItem:not([data-viewable="true"]){
   font-style: italic;
-  color: var(--bg-color);
+  color: var(--pressed-color);
   cursor: not-allowed;
 
 }
