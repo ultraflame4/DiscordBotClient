@@ -85,7 +85,7 @@ class ContextStore {
     useRef<T>(key:string,default_val: T):Ref<UnwrapRef<T>>{
         let val = this.use(key,default_val)
         let valRef = ref<T>(val.get())
-        watch(valRef,value => {val.set(value)})
+        watch(valRef,value => {val.set(<T>value)})
         return valRef
     }
 }
