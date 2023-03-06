@@ -17,11 +17,18 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         position: 0,
     },
     {
+        id: "bot-intents",
+        name: "Intents",
+        desc: "",
+        type: "bot-home",
+        position: 1,
+    },
+    {
         id: "bot-others",
         name: "Others",
         desc: "",
         type: "bot-home",
-        position: 1
+        position: 2
     },
 ]
 
@@ -29,6 +36,8 @@ export function GetBotHomeIcon(channelId: string): string {
     switch (channelId) {
         case "bot-account":
             return "ph:key-fill"
+        case "bot-intents":
+            return "mdi:shield-alert"
         case "bot-others":
             return "uiw:more"
 
