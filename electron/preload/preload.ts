@@ -15,7 +15,9 @@ const discordApi: IPreloadDiscordApi = {
         let r = await ipcRenderer.invoke('check-login')
         this.ready = r;
         return r
-    }
+    },
+
+    getChannelMessages: async (channelId:string) => await ipcRenderer.invoke("get-messages",channelId)
 
 }
 

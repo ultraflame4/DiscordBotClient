@@ -11,7 +11,7 @@ export function getClient():Client {
 
 
 export const ClientIntentsConfig:Partial<Record<GatewayIntentsString, boolean>> = {
-    Guilds: false
+    Guilds: true
 }
 
 export function loginClient(token: string): Promise<boolean> {

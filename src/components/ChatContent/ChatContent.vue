@@ -1,7 +1,7 @@
 <template>
   <div class="chat-content">
     <ul class="messages-container">
-
+      {{messages}}
     </ul>
     <div class="chat-input">
       <input :placeholder="`Send stuff to # ${props.channel.name}`"/>
@@ -14,13 +14,18 @@
 <script lang="ts" setup>
 
 import {GuildMessages} from "../../utils";
+import {discordApi} from "../../api";
 
 const props = defineProps<{
   channel:SimplifiedChannelInfo
 }>()
 
 
-const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${props.channel.id}`,[],null,[()=>props.channel.id])
+const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${props.channel.id}`,[],(ref)=>{
+  discordApi.getChannelMessages(props.channel.id).then(value => {
+    ref.value=value
+  })
+},[()=>props.channel.id])
 
 
 </script>

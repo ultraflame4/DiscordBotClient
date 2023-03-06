@@ -1,6 +1,6 @@
 import {app, BrowserWindow, ipcMain} from "electron"
 import * as path from "path";
-import {botLogin, getBotGuilds, getBotUsername, getGuildChannels} from "./controllers";
+import {botLogin, getBotGuilds, getBotUsername, getGuildChannels, getTextChannelMessages} from "./controllers";
 import {checkBotLoggedIn, logoutClient} from "./discordHandler";
 
 function createAppWindow() {
@@ -30,6 +30,7 @@ app.whenReady().then(() => {
     ipcMain.handle("get-guilds", getBotGuilds)
     ipcMain.handle("login", botLogin)
     ipcMain.handle("check-login",checkBotLoggedIn)
+    ipcMain.handle("get-messages",getTextChannelMessages)
 
     createAppWindow()
 })
