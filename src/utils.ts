@@ -100,12 +100,12 @@ class ContextStore {
     /**
      * Similar to watch ref, instead creates a ref, that can be updated to read from the store depending on the dependencies
      * @param key Key of the store. Is a callback to allow for dynamic key changes. Eg. the key is a ref.
-     * @param initial_value The initial value of the ref and default value used as fallback unless new_val specified otherwise.
+     * @param initial_value The initial value of the ref and default value used as fallback unless new_val specified otherwise (or found in store).
      * @param new_val Called whenever the ref cannot get a value from the store and needs to fallback on a default value. Return null to use initial_value
      * @param dependencies List of sources that when change tells the ref to read stored data from the store. Typically, any variables used in the key shld be in here.
      */
     useRef<T>(key:()=>string,initial_value:T,new_val:null|((ref:Ref<UnwrapRef<T>>)=>void)=null,dependencies:WatchSource[]=[]):Ref<UnwrapRef<T>>{
-        let valRef = ref<T>(initial_value)
+        let valRef = ref<T>(this.get(key(),initial_value))
         this.watchRef(key,valRef)
 
         if (dependencies.length>0){
