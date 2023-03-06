@@ -9,11 +9,14 @@ export function getClient():Client {
     return client;
 }
 
-export const ClientIntents: GatewayIntentsString[] = ["Guilds"];
+
+export const ClientIntentsConfig:Partial<Record<GatewayIntentsString, boolean>> = {
+    Guilds: false
+}
 
 export function loginClient(token: string): Promise<boolean> {
     let client_ = new Client({
-        intents: ClientIntents
+        intents: <GatewayIntentsString[]>Object.entries(ClientIntentsConfig).filter(([k,v])=>v).map(([k,v])=>k)
     });
 
     return new Promise((resolve, reject) => {
