@@ -163,7 +163,7 @@ watch(currentChannel!, () => [
   padding: 0;
   overflow-y: auto;
   height: 100%;
-  background: var(--surface-color);
+  background: var(--surface);
   color: var(--text-b);
 }
 

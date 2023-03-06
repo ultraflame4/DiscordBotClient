@@ -18,11 +18,9 @@
     <div class="content-header" v-text="currentChannel?.name"/>
 
     <div class="content">
-      <BotHomeContent v-if="currentChannel?.type==='bot-home'" :channel_id="currentChannel?.id"/>
-      <!--      -->
-      <!--      {currentChannel?.type === "bot-home" &&-->
-      <!--      <BotHomeContent channel_id={currentChannel.id} on_requestLogin={LoginApi}-->
-      <!--                      authState={authStatus}/>}-->
+      <BotHomeContent v-if="currentChannel?.type==='bot-home'" :channel_id="currentChannel.id"/>
+      <ChatContent v-if="currentChannel?.type==='text'" :channel="currentChannel"/>
+
     </div>
   </div>
 
@@ -35,6 +33,7 @@ import {AuthStatus, discordApi} from "./api";
 import GuildList from "./components/GuildList/GuildList.vue";
 import ChannelList from "./components/ChannelList/ChannelList.vue";
 import BotHomeContent from "./components/BotHome/BotHomeContent.vue";
+import ChatContent from "./components/ChatContent/ChatContent.vue";
 
 const guildList = ref<SimplifiedGuildInfo[]>([])
 const openedGuild = ref<SimplifiedGuildInfo>(BotHomeGuild)
@@ -112,8 +111,9 @@ watch(authStatus, (newVal) => {
   align-items: center;
   z-index: 1;
   border-top-left-radius: 0.5rem;
-  border-bottom: 2px solid var(--bg-color);
-  background: var(--surface-color);
+  border-bottom: 2px solid var(--pressed-color);
+  background: var(--surface);
+
 }
 
 .channels-header[data-hasbanner="true"] {
@@ -144,6 +144,7 @@ watch(authStatus, (newVal) => {
   grid-column: 3 / 4;
   grid-row: 1 / 2;
   background-color: var(--bg-color);
+  border-bottom: 2px solid var(--accent-color);
 }
 
 .content {

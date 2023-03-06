@@ -5,7 +5,7 @@
 
 :root{
   --bg-color: #1c1c1c;
-  --surface-color: #222222;
+  --surface: #242424;
 
   --accent-color: #ff0057;
   --hover-color: rgba(255, 255, 255, 0.08);
@@ -29,19 +29,26 @@
 
 
 input {
-  padding: 0.3rem 0.5rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 0.5rem;
   border: 0.01rem solid transparent;
-  background-color: var(--surface-color);
+  background-color: var(--surface);
   color: white;
-  outline-color: transparent;
-
-
+  outline: 0.2rem solid var(--accent-color);
   font-size: 0.9em;
-  font-weight: 700;
+  font-weight: 500;
   font-family: "Poppins";
   margin-right: 0.5rem;
   margin-top: 0.45rem;
+  box-sizing: border-box;
+}
+
+input::placeholder{
+  font-weight: 700;
+}
+
+input:not(:focus){
+  outline-color: transparent;
 }
 
 label {
@@ -61,7 +68,7 @@ button {
   font-family: "Poppins";
   letter-spacing: 0.09em;
   cursor: pointer;
-  background: var(--surface-color);
+  background: var(--surface);
   color: white;
   border: 0.01rem solid var(--accent-color);
 

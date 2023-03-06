@@ -28,7 +28,14 @@ declare global {
         position: number,
     }
 
+    interface SimplifiedMessageItem{
+        author_id:string,
+        author_name:string,
+        author_icon:string,
+        last_edit:string,
+        content:string,
 
+    }
 
     interface IPreloadDiscordApi {
         ready: boolean;

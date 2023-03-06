@@ -128,5 +128,8 @@ class ContextStore {
 }
 
 export const ChannelListCtx = new ContextStore()
+export const GuildMessages = new ContextStore()
 //@ts-ignore
 window.ChannelListCtx=ChannelListCtx
+//@ts-ignore
+window.GuildMessages=GuildMessages
