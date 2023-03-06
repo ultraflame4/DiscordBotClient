@@ -1,6 +1,6 @@
 import {IpcMainInvokeEvent} from 'electron';
 import {getClient, loginClient} from "./discordHandler";
-import {Snowflake, TextChannel} from "discord.js";
+import {ChannelType, Snowflake, TextChannel} from "discord.js";
 import {ChannelType} from "discord-api-types/v10";
 
 export async function getBotUsername(e: IpcMainInvokeEvent) {
@@ -90,4 +90,16 @@ export async function getBotGuilds(e: IpcMainInvokeEvent): Promise<SimplifiedGui
 
 export async function botLogin(e: IpcMainInvokeEvent, token: string) {
     return await loginClient(token)
+}
+
+export async function getTextChannelMessages(e: IpcMainInvokeEvent, channelId: string){
+    const channel = await getClient().channels.fetch(channelId)
+    if (channel.type !== ChannelType.GuildText) {
+        return []
+    }
+    let messages = await channel.messages.fetch({
+        limit: 20
+    })
+
+    // todo
 }
