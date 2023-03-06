@@ -9,7 +9,7 @@ export function getClient():Client {
     return client;
 }
 
-export const ClientIntents: GatewayIntentsString[] = ["Guilds", "GuildMessages"];
+export const ClientIntents: GatewayIntentsString[] = ["Guilds"];
 
 export function loginClient(token: string): Promise<boolean> {
     let client_ = new Client({
@@ -20,6 +20,7 @@ export function loginClient(token: string): Promise<boolean> {
         client_.on("ready", (e) => {
             client = client_;
             console.log("Logged in as", client?.user);
+
             resolve(true);
         })
         console.log("Logging in...");

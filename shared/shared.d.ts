@@ -32,8 +32,12 @@ declare global {
         author_id:string,
         author_name:string,
         author_icon:string,
-        last_edit:string,
-        content:string,
+        last_edit:Date,
+        posted:Date,
+        /**
+         * Requires Message Content Intent, else will be null
+         */
+        content:string|null,
 
     }
 
