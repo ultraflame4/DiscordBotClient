@@ -37,24 +37,27 @@ export function GetBotHomeIcon(channelId: string): string {
     }
 }
 
-class ContextStorageProperty<T> {
-    private ctxStore: ContextStore;
-    private key: string;
-    private defaultValue: T|null;
 
-    constructor(ctxStore: ContextStore, key: string, defaultValue: T|null=null) {
+
+class ContextStorageProperty<T>  {
+    private ctxStore: ContextStore;
+    private readonly key: ()=>string;
+    private readonly defaultValue: (()=>T)|null;
+
+    constructor(ctxStore: ContextStore, keyGetter: ()=>string, defaultValue: (()=>T)|null=null) {
         this.ctxStore = ctxStore
-        this.key = key;
+        this.key = keyGetter;
         this.defaultValue = defaultValue;
 
     }
 
-    get(defaultVal_: T | null = null): T {
+    public get(defaultVal_: T | null = null): T {
         // @ts-ignore
-        return this.ctxStore.get<T>(this.key, defaultVal_ ?? this.defaultValue)
+        return this.ctxStore.get<T>(this.key(), defaultVal_ ?? this.defaultValue)
     }
-    set(val:T) {
-        this.ctxStore.set<T>(this.key, val)
+
+    set(val: T) {
+        this.ctxStore.set<T>(this.key(), val)
     }
 }
 
@@ -70,11 +73,12 @@ class ContextStore {
     }
 
     get<T>(key: string, default_: T): T {
+
         return this.data[key] ?? default_
     }
 
-    use<T>(key:string,default_val: T|null=null){
-        return new ContextStorageProperty<T>(this,key,default_val)
+    use<T>(keyGetter:()=>string,default_val: (()=>T)|null=null): ContextStorageProperty<T>{
+        return new ContextStorageProperty<T>(this,keyGetter,default_val)
     }
 
     /**
@@ -82,11 +86,12 @@ class ContextStore {
      * @param key
      * @param default_val
      */
-    useRef<T>(key:string,default_val: T):Ref<UnwrapRef<T>>{
+    useRef<T>(key:()=>string,default_val: ()=>T):[Ref<UnwrapRef<T>>,ContextStorageProperty<T>]{
         let val = this.use(key,default_val)
         let valRef = ref<T>(val.get())
         watch(valRef,value => {val.set(<T>value)})
-        return valRef
+
+        return [valRef,val]
     }
 }
 

@@ -47,21 +47,17 @@ interface ChannelItemType<T> {
 
 }
 
-interface BaseChannelItemType extends ChannelItemType<any> {
-}
-
-interface CategoryItem extends ChannelItemType<CategoryGroup> {
-}
-
-interface ChannelItem extends ChannelItemType<SimplifiedChannelInfo> {
-}
+interface BaseChannelItemType extends ChannelItemType<any> {}
+interface CategoryItem extends ChannelItemType<CategoryGroup> {}
+interface ChannelItem extends ChannelItemType<SimplifiedChannelInfo> {}
 
 
 function isCategory(item: ChannelItemType<any>): item is CategoryItem {
   return item.type === "category"
 }
 
-const channels = ref<BaseChannelItemType[]>([])
+const [channels,channelsStore] = ChannelListCtx.useRef<BaseChannelItemType[]>(()=>`channelList-${props.guildId}`,()=>[])
+
 
 
 const currentChannel = inject<Ref<SimplifiedChannelInfo>>("selectedChannel")
@@ -69,8 +65,7 @@ const authState = inject("authStatus") as Ref<AuthStatus>;
 
 
 function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort and categories channels, and then put them into the ui
-  channels.value = []
-
+  channels.value=[]
   channels_.forEach(c => {
 
     let data = null;
@@ -94,7 +89,7 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
       data: data ?? c
     })
 
-  })
+  });
 
   channels.value.sort((a, b) => {
     // In the discord app, channels with no category are always displayed first
@@ -114,6 +109,10 @@ function UpdateChannels() {
 
   if (props.guildId === BotHomeGuild.id) {
     CategoriseChannels(BotHomeChannels)
+    return
+  }
+  channels.value=channelsStore.get([])
+  if (channels.value.length > 0) {
     return
   }
 
@@ -136,7 +135,6 @@ watch(() => props.guildId, () => {
 })
 
 watch(channels, value => {
-  console.log(getFirstChannel())
   currentChannel!.value = ChannelListCtx.get(`opened-channel-${props.guildId}`, getFirstChannel())
 }, {
   immediate: true
