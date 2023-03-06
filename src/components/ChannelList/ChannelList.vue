@@ -56,12 +56,30 @@ function isCategory(item: ChannelItemType<any>): item is CategoryItem {
   return item.type === "category"
 }
 
-const [channels,channelsStore] = ChannelListCtx.useRef<BaseChannelItemType[]>(()=>`channelList-${props.guildId}`,()=>[])
-
 
 
 const currentChannel = inject<Ref<SimplifiedChannelInfo>>("selectedChannel")
 const authState = inject("authStatus") as Ref<AuthStatus>;
+
+const channels = ChannelListCtx.useRef<BaseChannelItemType[]>(()=>`channelList-${props.guildId}`,[],(ref)=>{
+  channels.value=[]
+  UpdateChannels()
+},[()=>props.guildId])
+
+
+function UpdateChannels() {
+
+  if (props.guildId === BotHomeGuild.id) {
+    CategoriseChannels(BotHomeChannels)
+    return
+  }
+
+  if (authState.value === AuthStatus.LoggedIn) {
+    discordApi.getGuildChannels(props.guildId).then(channels_ => {
+      CategoriseChannels(channels_)
+    })
+  }
+}
 
 
 function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort and categories channels, and then put them into the ui
@@ -105,23 +123,6 @@ function CategoriseChannels(channels_: SimplifiedChannelInfo[]) { // group, sort
 }
 
 
-function UpdateChannels() {
-
-  if (props.guildId === BotHomeGuild.id) {
-    CategoriseChannels(BotHomeChannels)
-    return
-  }
-  channels.value=channelsStore.get([])
-  if (channels.value.length > 0) {
-    return
-  }
-
-  if (authState.value === AuthStatus.LoggedIn) {
-    discordApi.getGuildChannels(props.guildId).then(channels_ => {
-      CategoriseChannels(channels_)
-    })
-  }
-}
 
 function getFirstChannel(): SimplifiedChannelInfo {
   return channels.value.flatMap(x => isCategory(x) ? x.data.channels : x.data)[0]

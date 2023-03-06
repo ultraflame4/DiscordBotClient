@@ -1,4 +1,4 @@
-import {Ref, ref, UnwrapRef, watch} from "vue";
+import {Ref, ref, UnwrapRef, watch, WatchSource} from "vue";
 
 export const BotHomeGuild: SimplifiedGuildInfo = {
     id: "bot-home",
@@ -38,29 +38,30 @@ export function GetBotHomeIcon(channelId: string): string {
 }
 
 
-
-class ContextStorageProperty<T>  {
+/**
+ * A handler to ease the use of store with a fixed key
+ */
+class ContextStoreHandler<T>  {
     private ctxStore: ContextStore;
-    private readonly key: ()=>string;
-    private readonly defaultValue: (()=>T)|null;
+    private readonly key: string;
+    private readonly defaultValue: T;
 
-    constructor(ctxStore: ContextStore, keyGetter: ()=>string, defaultValue: (()=>T)|null=null) {
+    constructor(ctxStore: ContextStore, keyGetter: string, defaultValue: T) {
         this.ctxStore = ctxStore
         this.key = keyGetter;
         this.defaultValue = defaultValue;
 
     }
 
-    public get(defaultVal_: T | null = null): T {
-        // @ts-ignore
-        return this.ctxStore.get<T>(this.key(), defaultVal_ ?? this.defaultValue)
+    get(defaultVal_: T | null = null): T {
+
+        return this.ctxStore.get<T>(this.key, defaultVal_ ?? this.defaultValue)
     }
 
     set(val: T) {
-        this.ctxStore.set<T>(this.key(), val)
+        this.ctxStore.set<T>(this.key, val)
     }
 }
-
 class ContextStore {
     private data: Record<string, any> = {}
 
@@ -77,21 +78,52 @@ class ContextStore {
         return this.data[key] ?? default_
     }
 
-    use<T>(keyGetter:()=>string,default_val: (()=>T)|null=null): ContextStorageProperty<T>{
-        return new ContextStorageProperty<T>(this,keyGetter,default_val)
+    use<T>(key:string,default_val: T): ContextStoreHandler<T>{
+        return new ContextStoreHandler<T>(this,key,default_val)
     }
 
     /**
-     * Like this.use(), but returns a ref, and watches it for changes. When there are changes, also calls set
+     * Watches this ref and updates data in the store whenever there are changes
      * @param key
      * @param default_val
+     * @param ref
      */
-    useRef<T>(key:()=>string,default_val: ()=>T):[Ref<UnwrapRef<T>>,ContextStorageProperty<T>]{
-        let val = this.use(key,default_val)
-        let valRef = ref<T>(val.get())
-        watch(valRef,value => {val.set(<T>value)})
+    watchRef<T>(key:()=>string,ref:Ref<T>){
+        watch<T>(ref,value => {
+            this.set(key(),value)
+        })
+    }
 
-        return [valRef,val]
+
+
+
+    /**
+     * Similar to watch ref, instead creates a ref, that can be updated to read from the store depending on the dependencies
+     * @param key Key of the store. Is a callback to allow for dynamic key changes. Eg. the key is a ref.
+     * @param initial_value The initial value of the ref and default value used as fallback unless new_val specified otherwise.
+     * @param new_val Called whenever the ref cannot get a value from the store and needs to fallback on a default value. Return null to use initial_value
+     * @param dependencies List of sources that when change tells the ref to read stored data from the store. Typically, any variables used in the key shld be in here.
+     */
+    useRef<T>(key:()=>string,initial_value:T,new_val:null|((ref:Ref<UnwrapRef<T>>)=>void)=null,dependencies:WatchSource[]=[]):Ref<UnwrapRef<T>>{
+        let valRef = ref<T>(initial_value)
+        this.watchRef(key,valRef)
+
+        if (dependencies.length>0){
+            watch(dependencies,value => {
+
+                let _val = this.get<T|null>(key(),null)
+                if (_val===null) {
+                    if (new_val) {
+                        new_val(valRef);
+                        return
+                    }
+                    _val=initial_value
+                }
+                //@ts-ignore
+                valRef.value=_val
+            })
+        }
+        return valRef
     }
 }
 

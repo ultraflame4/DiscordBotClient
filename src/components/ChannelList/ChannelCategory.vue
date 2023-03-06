@@ -18,7 +18,7 @@ const props = defineProps<{
 }>()
 
 
-const expanded = ChannelListCtx.useRef(()=>`category-${props.id}-expanded`,()=>true)
+const expanded = ChannelListCtx.useRef(()=>`category-${props.id}-expanded`,true,null,[()=>props.id])
 
 </script>
 
