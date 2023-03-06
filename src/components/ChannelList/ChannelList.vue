@@ -136,7 +136,10 @@ watch(() => props.guildId, () => {
 })
 
 watch(channels, value => {
+  console.log(getFirstChannel())
   currentChannel!.value = ChannelListCtx.get(`opened-channel-${props.guildId}`, getFirstChannel())
+}, {
+  immediate: true
 })
 
 watch(currentChannel!, () => [
