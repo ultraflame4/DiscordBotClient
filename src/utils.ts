@@ -1,4 +1,5 @@
 import {Ref, ref, UnwrapRef, watch, WatchSource} from "vue";
+import dayjs from "dayjs";
 
 export const BotHomeGuild: SimplifiedGuildInfo = {
     id: "bot-home",
@@ -15,7 +16,7 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         desc: "",
         type: "bot-home",
         position: 0,
-        viewable:true
+        viewable: true
     },
     {
         id: "bot-intents",
@@ -23,7 +24,7 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         desc: "",
         type: "bot-home",
         position: 1,
-        viewable:true
+        viewable: true
     },
     {
         id: "bot-others",
@@ -31,7 +32,7 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         desc: "",
         type: "bot-home",
         position: 2,
-        viewable:true
+        viewable: true
     },
 ]
 
@@ -50,10 +51,19 @@ export function GetBotHomeIcon(channelId: string): string {
 }
 
 
+export function FancyFormatDateTime(date: Date): string {
+
+    return dayjs(date).calendar(undefined, {
+        sameElse: "DD/MM/YYYY h:mm A"
+    })
+
+}
+
+
 /**
  * A handler to ease the use of store with a fixed key
  */
-class ContextStoreHandler<T>  {
+class ContextStoreHandler<T> {
     private ctxStore: ContextStore;
     private readonly key: string;
     private readonly defaultValue: T;
@@ -74,6 +84,7 @@ class ContextStoreHandler<T>  {
         this.ctxStore.set<T>(this.key, val)
     }
 }
+
 class ContextStore {
     private data: Record<string, any> = {}
 
@@ -90,8 +101,8 @@ class ContextStore {
         return this.data[key] ?? default_
     }
 
-    use<T>(key:string,default_val: T): ContextStoreHandler<T>{
-        return new ContextStoreHandler<T>(this,key,default_val)
+    use<T>(key: string, default_val: T): ContextStoreHandler<T> {
+        return new ContextStoreHandler<T>(this, key, default_val)
     }
 
     /**
@@ -100,13 +111,11 @@ class ContextStore {
      * @param default_val
      * @param ref
      */
-    watchRef<T>(key:()=>string,ref:Ref<T>){
-        watch<T>(ref,value => {
-            this.set(key(),value)
+    watchRef<T>(key: () => string, ref: Ref<T>) {
+        watch<T>(ref, value => {
+            this.set(key(), value)
         })
     }
-
-
 
 
     /**
@@ -116,23 +125,23 @@ class ContextStore {
      * @param new_val Called whenever the ref cannot get a value from the store and needs to fallback on a default value. Return null to use initial_value
      * @param dependencies List of sources that when change tells the ref to read stored data from the store. Typically, any variables used in the key shld be in here.
      */
-    useRef<T>(key:()=>string,initial_value:T,new_val:null|((ref:Ref<UnwrapRef<T>>)=>void)=null,dependencies:WatchSource[]=[]):Ref<UnwrapRef<T>>{
-        let valRef = ref<T>(this.get(key(),initial_value))
-        this.watchRef(key,valRef)
+    useRef<T>(key: () => string, initial_value: T, new_val: null | ((ref: Ref<UnwrapRef<T>>) => void) = null, dependencies: WatchSource[] = []): Ref<UnwrapRef<T>> {
+        let valRef = ref<T>(this.get(key(), initial_value))
+        this.watchRef(key, valRef)
 
-        if (dependencies.length>0){
-            watch(dependencies,value => {
+        if (dependencies.length > 0) {
+            watch(dependencies, value => {
 
-                let _val = this.get<T|null>(key(),null)
-                if (_val===null) {
+                let _val = this.get<T | null>(key(), null)
+                if (_val === null) {
                     if (new_val) {
                         new_val(valRef);
                         return
                     }
-                    _val=initial_value
+                    _val = initial_value
                 }
                 //@ts-ignore
-                valRef.value=_val
+                valRef.value = _val
             })
         }
         return valRef
@@ -142,6 +151,6 @@ class ContextStore {
 export const ChannelListCtx = new ContextStore()
 export const GuildMessages = new ContextStore()
 //@ts-ignore
-window.ChannelListCtx=ChannelListCtx
+window.ChannelListCtx = ChannelListCtx
 //@ts-ignore
-window.GuildMessages=GuildMessages
+window.GuildMessages = GuildMessages

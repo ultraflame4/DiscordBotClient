@@ -4,7 +4,7 @@
     <template v-if="!props.short">
       <img v-if="msg.author_icon" :src="msg.author_icon" class="icon"/>
       <div v-else class="icon">{{msg.author_name[0]}}</div>
-      <h4>{{msg.author_name}} <span>{{msg.last_edit.toDateString()}}</span></h4>
+      <h4>{{msg.author_name}} <span>{{FancyFormatDateTime(msg.posted)}}</span></h4>
     </template>
 
     <p>
@@ -14,6 +14,9 @@
 </template>
 
 <script lang="ts" setup>
+
+import dayjs from "dayjs";
+import {FancyFormatDateTime} from "../../utils";
 
 const props = defineProps<{
   msg:SimplifiedMessageItem,

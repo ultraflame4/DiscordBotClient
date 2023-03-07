@@ -27,6 +27,7 @@
     "vue-tsc": "^1.1.7"
   },
   "dependencies": {
+    "dayjs": "^1.11.7",
     "discord-api-types": "^0.37.35",
     "discord.js": "^14.7.1",
     "sass": "^1.58.3",
