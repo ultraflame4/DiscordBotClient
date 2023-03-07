@@ -106,7 +106,7 @@ export async function getTextChannelMessages(e: IpcMainInvokeEvent, channelId: s
         limit: 20
     })
 
-    return messages.map((value, id) => {
+    let simplified: SimplifiedMessageItem[] = messages.map((value, id) => {
 
         let content: string | null;
         try {
@@ -121,7 +121,13 @@ export async function getTextChannelMessages(e: IpcMainInvokeEvent, channelId: s
             author_icon: value.author.avatarURL(),
             content: content,
             last_edit: value.editedAt??value.createdAt,
-            posted: value.createdAt
+            posted: value.createdAt,
+            id:value.id
         }
     })
+    simplified.sort((a,b)=>{
+        return a.posted.getTime()-b.posted.getTime()
+    })
+
+    return simplified
 }
