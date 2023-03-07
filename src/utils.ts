@@ -97,7 +97,6 @@ class ContextStore {
     }
 
     get<T>(key: string, default_: T): T {
-
         return this.data[key] ?? default_
     }
 

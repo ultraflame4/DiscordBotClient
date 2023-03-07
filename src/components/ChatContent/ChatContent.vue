@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-content">
+  <div class="chat-content" ref="chatContentRef" @scroll="saveScrollHeight">
     <ul class="messages-container">
       <Message v-for="msg in messages" :msg="msg" :key="msg.id"/>
     </ul>
@@ -16,17 +16,31 @@
 import {GuildMessages} from "../../utils";
 import {discordApi} from "../../api";
 import Message from "./Message.vue";
+import {ref, watch} from "vue";
 
 const props = defineProps<{
   channel:SimplifiedChannelInfo
 }>()
 
-
+const chatContentRef = ref<HTMLDivElement|null>(null)
 const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${props.channel.id}`,[],(ref)=>{
   discordApi.getChannelMessages(props.channel.id).then(value => {
     ref.value=value
   })
 },[()=>props.channel.id])
+
+
+watch(()=>props.channel.id,value => {
+  setTimeout(args => {
+    if (!chatContentRef.value)return
+    chatContentRef.value.scrollTop=GuildMessages.get(`guildmsg-scroll-${props.channel.id}`,chatContentRef.value.scrollHeight)
+  },100)
+
+})
+
+function saveScrollHeight() {
+  GuildMessages.set(`guildmsg-scroll-${props.channel.id}`,chatContentRef.value?.scrollTop??0)
+}
 
 
 </script>
