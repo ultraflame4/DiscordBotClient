@@ -64,9 +64,10 @@ function isCategory(item: ChannelItemType<any>): item is CategoryItem {
 const currentChannel = inject<Ref<SimplifiedChannelInfo>>("selectedChannel")
 const authState = inject("authStatus") as Ref<AuthStatus>;
 
-const channels = ChannelListCtx.useRef<BaseChannelItemType[]>(()=>`channelList-${props.guildId}`,[],(ref)=>{
+const channels:Ref<BaseChannelItemType[]> = ChannelListCtx.useRef<BaseChannelItemType[]>(()=>`channelList-${props.guildId}`,[],async () =>{
   channels.value=[]
   UpdateChannels()
+  return channels.value
 },[()=>props.guildId])
 
 

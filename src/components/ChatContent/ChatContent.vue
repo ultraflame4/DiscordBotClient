@@ -23,10 +23,8 @@ const props = defineProps<{
 }>()
 
 const chatContentRef = ref<HTMLDivElement|null>(null)
-const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${props.channel.id}`,[],(ref)=>{
-  discordApi.getChannelMessages(props.channel.id).then(value => {
-    ref.value=value
-  })
+const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${props.channel.id}`,[],async ()=>{
+  return await discordApi.getChannelMessages(props.channel.id)
 },[()=>props.channel.id])
 
 
