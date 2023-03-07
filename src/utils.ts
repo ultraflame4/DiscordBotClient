@@ -121,20 +121,25 @@ class ContextStore {
      * Similar to watch ref, instead creates a ref, that can be updated to read from the store depending on the dependencies
      * @param key Key of the store. Is a callback to allow for dynamic key changes. Eg. the key is a ref.
      * @param initial_value The initial value of the ref and default value used as fallback unless new_val specified otherwise (or found in store).
-     * @param new_val Called whenever the ref cannot get a value from the store and needs to fallback on a default value. Return null to use initial_value
+     * @param new_val Callback (that resolves with the new value) whenever the ref cannot get a value from the store and needs to fallback on a default value. Set to null to use initial_value
      * @param dependencies List of sources that when change tells the ref to read stored data from the store. Typically, any variables used in the key shld be in here.
      */
-    useRef<T>(key: () => string, initial_value: T, new_val: null | ((ref: Ref<UnwrapRef<T>>) => void) = null, dependencies: WatchSource[] = []): Ref<UnwrapRef<T>> {
+    useRef<T>(key: () => string, initial_value: T, new_val: null | (() => Promise<T>) = null, dependencies: WatchSource[] = []): Ref<UnwrapRef<T>> {
         let valRef = ref<T>(this.get(key(), initial_value))
         this.watchRef(key, valRef)
 
         if (dependencies.length > 0) {
             watch(dependencies, value => {
-
-                let _val = this.get<T | null>(key(), null)
+                let key_now = key()
+                let _val = this.get<T | null>(key_now, null)
                 if (_val === null) {
                     if (new_val) {
-                        new_val(valRef);
+                        new_val().then(value1 => {
+                            if (key()===key_now){
+                                //@ts-ignore
+                                valRef.value=value1
+                            }
+                        });
                         return
                     }
                     _val = initial_value
