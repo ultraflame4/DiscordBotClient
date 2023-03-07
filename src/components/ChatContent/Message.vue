@@ -4,7 +4,7 @@
     <template v-if="!props.short">
       <img v-if="msg.author_icon" :src="msg.author_icon" class="icon"/>
       <div v-else class="icon">{{msg.author_name[0]}}</div>
-      <h4>{{msg.author_name}} <span>{{msg.last_edit.toLocaleTimeString()}}</span></h4>
+      <h4>{{msg.author_name}} <span>{{msg.last_edit.toDateString()}}</span></h4>
     </template>
 
     <p>
@@ -30,6 +30,7 @@ const props = defineProps<{
   grid-template-rows: min-content 1fr;
   margin-top: 1rem;
   grid-column-gap: 1rem;
+  grid-row-gap: 0.3rem;
 }
 .message > .icon{
   grid-row: 1/3;
@@ -53,8 +54,19 @@ const props = defineProps<{
   grid-row: 1;
   grid-column: 2;
   margin: 0;
-  font-size: 0.9em;
+  font-weight: 800;
+  font-size: 0.85em;
   font-family: "Open Sans";
+}
+
+.message > h4 > span{
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-family: "Poppins";
+  margin-left: 0.25rem;
+  color: var(--text-b);
+
 }
 
 .message > p{
