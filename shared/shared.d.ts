@@ -30,6 +30,7 @@ declare global {
     }
 
     interface SimplifiedMessageItem{
+        id:string,
         author_id:string,
         author_name:string,
         author_icon?:string,

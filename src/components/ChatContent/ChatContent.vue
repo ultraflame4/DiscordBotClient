@@ -1,7 +1,7 @@
 <template>
   <div class="chat-content">
     <ul class="messages-container">
-      <Message v-for="msg in messages" :msg="msg"/>
+      <Message v-for="msg in messages" :msg="msg" :key="msg.id"/>
     </ul>
     <div class="chat-input">
       <input :placeholder="`Send stuff to # ${props.channel.name}`"/>
