@@ -60,7 +60,7 @@ const props = defineProps<{
 }
 
 .message > h4 > span{
-  font-size: 0.6em;
+  font-size: 0.725em;
   font-weight: 700;
   letter-spacing: 0.03em;
   font-family: "Poppins";
