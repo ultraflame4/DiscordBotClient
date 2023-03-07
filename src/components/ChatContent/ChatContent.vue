@@ -1,7 +1,7 @@
 <template>
   <div class="chat-content">
     <ul class="messages-container">
-      {{messages}}
+      <Message v-for="msg in messages" :msg="msg"/>
     </ul>
     <div class="chat-input">
       <input :placeholder="`Send stuff to # ${props.channel.name}`"/>
@@ -15,6 +15,7 @@
 
 import {GuildMessages} from "../../utils";
 import {discordApi} from "../../api";
+import Message from "./Message.vue";
 
 const props = defineProps<{
   channel:SimplifiedChannelInfo
@@ -38,6 +39,7 @@ const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${p
   display: flex;
   flex-direction: column;
 
+
 }
 .chat-input{
   position: sticky;
@@ -47,6 +49,7 @@ const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${p
   display: flex;
   align-items: flex-end;
   padding: 1rem;
+  filter: drop-shadow(0 3px 3px black);
 }
 .chat-input>input{
   box-sizing: border-box;
@@ -62,8 +65,11 @@ const messages = GuildMessages.useRef<SimplifiedMessageItem[]>(()=>`guildmsg-${p
 
   flex-grow: 1;
   list-style-type: none;
-  padding: 0;
+  padding: 0 1rem;
   margin: 0;
+  min-height: fit-content;
+  overflow: visible;
+  box-sizing: border-box;
 
 }
 </style>

@@ -32,7 +32,7 @@ declare global {
     interface SimplifiedMessageItem{
         author_id:string,
         author_name:string,
-        author_icon:string,
+        author_icon?:string,
         last_edit:Date,
         posted:Date,
         /**
