@@ -15,6 +15,7 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         desc: "",
         type: "bot-home",
         position: 0,
+        viewable:true
     },
     {
         id: "bot-intents",
@@ -22,13 +23,15 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         desc: "",
         type: "bot-home",
         position: 1,
+        viewable:true
     },
     {
         id: "bot-others",
         name: "Others",
         desc: "",
         type: "bot-home",
-        position: 2
+        position: 2,
+        viewable:true
     },
 ]
 
