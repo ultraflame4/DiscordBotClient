@@ -1,48 +1,12 @@
 import {IpcMainInvokeEvent} from 'electron';
 import {getClient, loginClient} from "./discordHandler";
-import {DiscordAPIError, Snowflake, TextChannel} from "discord.js";
+import {Snowflake, TextChannel} from "discord.js";
 import {ChannelType} from "discord-api-types/v10";
+import {ConvertChannelType} from "./tools";
 
 
 export async function getBotUsername(e: IpcMainInvokeEvent) {
     return getClient().user?.username ?? "< Error client.user is null >";
-}
-
-function convertChannelType(type: ChannelType): StringChannelType {
-    switch (type) {
-        case ChannelType.GuildText:
-            return "text";
-
-        case ChannelType.DM:
-            return "dm";
-
-        case ChannelType.GuildVoice:
-            return "voice";
-
-        case ChannelType.GroupDM:
-            return "dm";
-
-        case ChannelType.GuildCategory:
-            return "category";
-
-        case ChannelType.GuildAnnouncement:
-            return "news";
-
-        case ChannelType.AnnouncementThread:
-            return "news";
-        case ChannelType.PublicThread:
-            return "thread";
-        case ChannelType.PrivateThread:
-            return "thread";
-        case ChannelType.GuildStageVoice:
-            return "voice";
-        case ChannelType.GuildDirectory:
-            return "unknown";
-        case ChannelType.GuildForum:
-            return "unknown";
-        default:
-            return "unknown";
-    }
 }
 
 /**
@@ -68,7 +32,7 @@ export async function getGuildChannels(e: IpcMainInvokeEvent, guildId: Snowflake
             id: id,
             name: channel.name,
             desc: (<TextChannel>channel).topic ?? null,
-            type: convertChannelType(channel!.type),
+            type: ConvertChannelType(channel!.type),
             parentId: channel.parentId,
             position: channel.position,
             viewable: channel.viewable
