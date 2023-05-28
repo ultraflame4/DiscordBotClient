@@ -8,4 +8,6 @@ import RelativeTime from "dayjs/plugin/relativeTime"
 dayjs.extend(calendar)
 dayjs.extend(RelativeTime)
 
-createApp(App).mount('#app')
+
+createApp(App)
+    .mount('#app')

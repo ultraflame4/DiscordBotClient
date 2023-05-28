@@ -32,6 +32,7 @@
     "discord.js": "^14.7.1",
     "sass": "^1.58.3",
     "vite-plugin-vuetify": "^1.0.2",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vyue42": "^0.0.0-dev.2"
   }
 }

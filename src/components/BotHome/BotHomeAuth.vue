@@ -4,13 +4,13 @@
   <button :disabled="_disabled()" @click="loginClient">
   {{ getBtnContents() }}
   </button>
-
 </template>
 
 <script lang="ts" setup>
 
 import {inject, ref, Ref} from "vue";
 import {AuthStatus, discordApi} from "../../api";
+import {TestComponent} from "vyue42";
 
 const authState = inject("authStatus") as Ref<AuthStatus>;
 const inpRef = ref(null) as Ref<HTMLInputElement|null>;
