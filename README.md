@@ -1,3 +1,5 @@
+# Abandoned.
+There will be little to no progress on this project.
 # DiscordBotClient
 A gui client for your discord bot
 
