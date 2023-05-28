@@ -1,5 +1,5 @@
 import {IpcMainInvokeEvent} from "electron";
-import {getClient} from "../discordHandler";
+import {getClient} from "../bot/discordHandler";
 import {ChannelType} from "discord-api-types/v10";
 
 

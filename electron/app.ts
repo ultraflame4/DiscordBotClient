@@ -1,7 +1,7 @@
 import {app, BrowserWindow, ipcMain} from "electron"
 import * as path from "path";
 
-import {checkBotLoggedIn, logoutClient} from "./discordHandler";
+import {checkBotLoggedIn, logoutClient} from "./bot/discordHandler";
 import BotInfoController from "./controllers/BotInfoController";
 import GuildsController from "./controllers/GuildsController";
 import ChannelsController from "./controllers/ChannelsController";

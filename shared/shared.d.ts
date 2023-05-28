@@ -6,7 +6,10 @@ declare global {
     }
 
     type StringChannelType = "text" | "bot-home" | "dm" | "voice" | "category" | "news" | "unknown" | "thread"
-    
+
+
+
+
     interface SimplifiedGuildInfo{ // to expand this later on as needed
         id: string,
         name: string,
