@@ -1,4 +1,4 @@
-import {getClient, loginClient} from "../bot/discordHandler";
+import {getClient, loginClient} from "../discordHandler";
 import {IpcMainInvokeEvent} from "electron";
 
 class BotInfoController_{

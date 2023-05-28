@@ -49,9 +49,9 @@ declare global {
     interface IPreloadDiscordApi {
         ready: boolean;
         login(token: string): Promise<boolean>;
-        /** Returns the username of the discord bot */
+        /** Returns the username of the discord botEvents */
         getUsername(): Promise<string|null>;
-        /** Returns the username of the discord bot */
+        /** Returns the username of the discord botEvents */
         getGuildList(): Promise<SimplifiedGuildInfo[]>;
         getGuildChannels(guildId: string): Promise<SimplifiedChannelInfo[]>;
         checkBotLoggedIn(): Promise<boolean>;

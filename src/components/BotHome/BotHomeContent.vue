@@ -1,6 +1,6 @@
 <template>
   <div class="botHomeContent">
-    <BotHomeAuth v-if="props.channel_id==='bot-account'"/>
+    <BotHomeAuth v-if="props.channel_id==='botEvents-account'"/>
   </div>
 </template>
 

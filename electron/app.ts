@@ -1,30 +1,12 @@
 import {app, BrowserWindow, ipcMain} from "electron"
 import * as path from "path";
 
-import {checkBotLoggedIn, logoutClient} from "./bot/discordHandler";
+import {checkBotLoggedIn, logoutClient} from "./discordHandler";
 import BotInfoController from "./controllers/BotInfoController";
 import GuildsController from "./controllers/GuildsController";
 import ChannelsController from "./controllers/ChannelsController";
+import {createAppWindow} from "./window";
 
-function createAppWindow() {
-    const win = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            preload: path.join(__dirname, "preload/preload.js"),
-        }
-    })
-
-    if (process.env.VITE_DEV_SERVER_URL) {
-        win.loadURL(process.env.VITE_DEV_SERVER_URL)
-    } else {
-        win.loadFile("dist/index.html")
-    }
-
-    win.on("close", event => {
-        logoutClient()
-    })
-}
 
 app.whenReady().then(() => {
 

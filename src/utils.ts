@@ -2,7 +2,7 @@ import {Ref, ref, UnwrapRef, watch, WatchSource} from "vue";
 import dayjs from "dayjs";
 
 export const BotHomeGuild: SimplifiedGuildInfo = {
-    id: "bot-home",
+    id: "botEvents-home",
     name: "Bot Home",
     iconUrl: null,
     bannerUrl: "https://picsum.photos/400",
@@ -11,7 +11,7 @@ export const BotHomeGuild: SimplifiedGuildInfo = {
 
 export const BotHomeChannels: SimplifiedChannelInfo[] = [
     {
-        id: "bot-account",
+        id: "botEvents-account",
         name: "Authentication",
         desc: "",
         type: "bot-home",
@@ -19,7 +19,7 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         viewable: true
     },
     {
-        id: "bot-intents",
+        id: "botEvents-intents",
         name: "Intents",
         desc: "",
         type: "bot-home",
@@ -27,7 +27,7 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
         viewable: true
     },
     {
-        id: "bot-others",
+        id: "botEvents-others",
         name: "Others",
         desc: "",
         type: "bot-home",
@@ -38,11 +38,11 @@ export const BotHomeChannels: SimplifiedChannelInfo[] = [
 
 export function GetBotHomeIcon(channelId: string): string {
     switch (channelId) {
-        case "bot-account":
+        case "botEvents-account":
             return "ph:key-fill"
-        case "bot-intents":
+        case "botEvents-intents":
             return "mdi:shield-alert"
-        case "bot-others":
+        case "botEvents-others":
             return "uiw:more"
 
         default:

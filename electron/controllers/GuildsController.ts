@@ -1,4 +1,4 @@
-import {getClient} from "../bot/discordHandler";
+import {getClient} from "../discordHandler";
 import {IpcMainInvokeEvent} from "electron";
 import {Snowflake, TextChannel} from "discord.js";
 import {ConvertChannelType} from "../tools";
